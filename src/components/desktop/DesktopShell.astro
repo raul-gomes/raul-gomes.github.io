@@ -1,0 +1,87 @@
+---
+import { profile } from '@data/profile';
+import { projects } from '@data/projects';
+import { stack } from '@data/stack';
+import { ui } from '@data/i18n';
+import type { Locale } from '@data/types';
+import ModeToggle from '@components/shared/ModeToggle.astro';
+import LangToggle from '@components/shared/LangToggle.astro';
+import '@styles/desktop.css';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = ui[locale];
+
+const payload = {
+  locale,
+  ui: t,
+  profile: {
+    name: profile.name,
+    handle: profile.handle,
+    role: profile.role[locale],
+    location: profile.location[locale],
+    email: profile.email,
+    github: profile.github,
+    linkedin: profile.linkedin,
+    cvPath: profile.cvPath,
+    bioShort: profile.bioShort[locale],
+    bioLong: profile.bioLong[locale],
+  },
+  projects: projects.map((p) => ({
+    id: p.id,
+    title: p.title,
+    tagline: p.tagline[locale],
+    readme: p.readme[locale],
+    stack: p.stack,
+    status: p.status,
+    links: p.links,
+    screenshot: p.screenshot,
+  })),
+  stack: stack.map((g) => ({ label: g.label[locale], items: g.items })),
+};
+
+const json = JSON.stringify(payload).replace(/</g, '\\u003c');
+---
+
+<div data-desktop-root>
+  <div class="desk" data-desk hidden>
+    <canvas class="desk__canvas" data-rain aria-hidden="true"></canvas>
+    <p class="desk__hint">{t.desktop.hint}</p>
+    <div class="win-layer" data-win-layer></div>
+    <div class="taskbar">
+      <span class="taskbar__start">&#9632; {profile.handle}</span>
+      <div class="taskbar__apps" data-taskbar-apps></div>
+      <span class="taskbar__spacer"></span>
+      <ModeToggle locale={locale} />
+      <LangToggle locale={locale} />
+      <span class="taskbar__clock" data-clock>--:--:--</span>
+    </div>
+  </div>
+
+  <div class="power" data-power>
+    <div class="power__screen"><div class="power__reflect"></div></div>
+    <button type="button" class="power__btn" data-power-on>{t.actions.powerOn}</button>
+    <span class="power__led" aria-hidden="true"></span>
+  </div>
+
+  <div class="boot" data-boot hidden aria-live="polite"></div>
+</div>
+
+<script type="application/json" data-payload set:html={json}></script>
+
+<script>
+  async function initDesktop() {
+    const root = document.querySelector<HTMLElement>('[data-desktop-root]');
+    const payloadEl = document.querySelector<HTMLScriptElement>('[data-payload]');
+    if (!root || !payloadEl) return;
+    if (document.documentElement.dataset.mode !== 'desktop') return;
+    const payload = JSON.parse(payloadEl.textContent || '{}');
+    const { bootDesktop } = await import('@scripts/desktop');
+    bootDesktop(root, payload);
+  }
+
+  initDesktop();
+</script>

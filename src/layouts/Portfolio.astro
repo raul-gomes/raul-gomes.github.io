@@ -1,6 +1,7 @@
 ---
 import Base from './Base.astro';
 import ReaderShell from '@components/reader/ReaderShell.astro';
+import DesktopShell from '@components/desktop/DesktopShell.astro';
 import { profile } from '@data/profile';
 import type { Locale } from '@data/types';
 import '@styles/reader.css';
@@ -22,6 +23,6 @@ const description = profile.bioShort[locale];
     <ReaderShell locale={locale} />
   </div>
   <div data-shell="desktop">
-    <div data-desktop-root data-locale={locale}></div>
+    <DesktopShell locale={locale} />
   </div>
 </Base>
