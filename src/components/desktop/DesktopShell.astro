@@ -81,6 +81,11 @@ const json = JSON.stringify(payload).replace(/</g, '\\u003c');
     const payload = JSON.parse(payloadEl.textContent || '{}');
     const { bootDesktop } = await import('@scripts/desktop');
     bootDesktop(root, payload);
+    const rain = root.querySelector<HTMLCanvasElement>('[data-rain]');
+    if (rain) {
+      const { startRain } = await import('@scripts/effects');
+      startRain(rain);
+    }
   }
 
   initDesktop();
