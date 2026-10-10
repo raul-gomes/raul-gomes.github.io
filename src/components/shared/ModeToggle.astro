@@ -1,0 +1,24 @@
+---
+import { ui } from '@data/i18n';
+import type { Locale } from '@data/types';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = ui[locale];
+---
+
+<button type="button" class="chip-btn" data-mode-toggle>
+  <span data-when="reader">[ {t.actions.toDesktop} ]</span>
+  <span data-when="desktop">[ {t.actions.toReader} ]</span>
+</button>
+
+<script>
+  import { toggleMode } from '@scripts/mode-controller';
+
+  for (const btn of document.querySelectorAll<HTMLButtonElement>('[data-mode-toggle]')) {
+    btn.addEventListener('click', () => toggleMode());
+  }
+</script>

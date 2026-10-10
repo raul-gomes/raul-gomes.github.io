@@ -1,0 +1,27 @@
+---
+import Base from './Base.astro';
+import ReaderShell from '@components/reader/ReaderShell.astro';
+import { profile } from '@data/profile';
+import type { Locale } from '@data/types';
+import '@styles/reader.css';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const title =
+  locale === 'pt'
+    ? `${profile.name} — ${profile.role.pt}`
+    : `${profile.name} — ${profile.role.en}`;
+const description = profile.bioShort[locale];
+---
+
+<Base locale={locale} title={title} description={description}>
+  <div data-shell="reader">
+    <ReaderShell locale={locale} />
+  </div>
+  <div data-shell="desktop">
+    <div data-desktop-root data-locale={locale}></div>
+  </div>
+</Base>

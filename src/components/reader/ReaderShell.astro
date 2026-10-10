@@ -1,0 +1,163 @@
+---
+import { profile } from '@data/profile';
+import { projects } from '@data/projects';
+import { stack } from '@data/stack';
+import { experience } from '@data/experience';
+import { awards, certifications } from '@data/certs';
+import { ui } from '@data/i18n';
+import type { Locale } from '@data/types';
+import ModeToggle from '@components/shared/ModeToggle.astro';
+import LangToggle from '@components/shared/LangToggle.astro';
+import ProjectBody from '@components/shared/ProjectBody.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = ui[locale];
+const s = t.sections;
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const nav = [
+  { href: '#sobre', label: s.bio },
+  { href: '#projetos', label: s.projects },
+  { href: '#stack', label: s.stack },
+  { href: '#experiencia', label: s.experience },
+  { href: '#certificacoes', label: s.certs },
+  { href: '#contato', label: s.contact },
+];
+---
+
+<div class="reader">
+  <a class="skip" href="#conteudo">{t.skipToContent}</a>
+
+  <header class="bar">
+    <span class="bar__id">{profile.handle}</span>
+    <span class="bar__sep">::</span>
+    <span class="led">{locale === 'pt' ? 'online' : 'online'}</span>
+    <nav class="bar__nav" aria-label={locale === 'pt' ? 'Seções' : 'Sections'}>
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+    <div class="bar__controls">
+      <ModeToggle locale={locale} />
+      <LangToggle locale={locale} />
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero">
+      <h1 class="hero__name">{profile.name.toUpperCase()}</h1>
+      <p class="hero__role">{profile.role[locale]}</p>
+      <p class="hero__meta">{profile.location[locale]} &middot; {profile.email}</p>
+    </section>
+
+    <section class="section" id="sobre">
+      <h2 class="section__head">
+        <span class="section__prompt">&gt;</span> {s.bio}<span class="crt-cursor"></span>
+      </h2>
+      <div class="bio">
+        <p>{profile.bioShort[locale]}</p>
+        {profile.bioLong[locale].split(/\n{2,}/).map((p) => <p>{p}</p>)}
+      </div>
+    </section>
+
+    <section class="section" id="projetos">
+      <h2 class="section__head">
+        <span class="section__prompt">&gt;</span> {s.projects}
+        <span class="section__count">{pad(projects.length)} arquivos</span>
+      </h2>
+      <div class="project-list">
+        {projects.map((project) => (
+          <article class="win">
+            <div class="win__bar">
+              <span class="win__title">projeto://{project.id}</span>
+              <span class="win__dots"><i></i><i></i><i></i></span>
+            </div>
+            <div class="win__body">
+              <ProjectBody project={project} locale={locale} />
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="section" id="stack">
+      <h2 class="section__head">
+        <span class="section__prompt">&gt;</span> {s.stack}
+        <span class="section__count">{pad(stack.length)} grupos</span>
+      </h2>
+      <div class="stack-grid">
+        {stack.map((group) => (
+          <div class="stack-group">
+            <h3>{group.label[locale]}</h3>
+            <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="section" id="experiencia">
+      <h2 class="section__head">
+        <span class="section__prompt">&gt;</span> {s.experience}
+      </h2>
+      <ul class="timeline">
+        {experience.map((job) => (
+          <li>
+            <div class="timeline__head">
+              <span class="timeline__role">{job.role[locale]}</span>
+              <span class="timeline__period">{job.period}</span>
+            </div>
+            <div class="timeline__company">{job.company}</div>
+            <p>{job.summary[locale]}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section" id="certificacoes">
+      <h2 class="section__head">
+        <span class="section__prompt">&gt;</span> {s.certs}
+      </h2>
+      {awards.map((a) => <div class="award">&#9733; {a.title[locale]} &mdash; {a.issuer} {a.year}</div>)}
+      <ul class="records">
+        {certifications.map((c) => (
+          <li>
+            <span class="records__year">{c.year}</span>
+            <span>{c.name} &mdash; <span style="color:var(--amber-dim)">{c.issuer}</span></span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section" id="contato">
+      <h2 class="section__head">
+        <span class="section__prompt">&gt;</span> {s.contact}
+      </h2>
+      <div class="contact">
+        <div class="contact__row">
+          <span class="contact__key">email</span>
+          <a href={`mailto:${profile.email}`}>{profile.email}</a>
+        </div>
+        <div class="contact__row">
+          <span class="contact__key">github</span>
+          <a href={profile.github} target="_blank" rel="noopener noreferrer">{profile.github.replace('https://', '')}</a>
+        </div>
+        <div class="contact__row">
+          <span class="contact__key">linkedin</span>
+          <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">{profile.linkedin.replace('https://www.', '')}</a>
+        </div>
+        <div class="contact__row">
+          <span class="contact__key">{locale === 'pt' ? 'local' : 'location'}</span>
+          <span>{profile.location[locale]}</span>
+        </div>
+      </div>
+      <a class="cta" href={profile.cvPath} download>{t.actions.downloadCv} &darr;</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>&copy; {new Date().getFullYear()} {profile.name}</span>
+    <span>nostromo terminal // v1.0</span>
+  </footer>
+</div>

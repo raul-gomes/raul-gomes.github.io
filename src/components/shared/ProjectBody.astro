@@ -1,0 +1,36 @@
+---
+import { ui } from '@data/i18n';
+import type { Locale, Project } from '@data/types';
+
+interface Props {
+  project: Project;
+  locale: Locale;
+}
+
+const { project, locale } = Astro.props;
+const t = ui[locale];
+const paragraphs = project.readme[locale].split(/\n{2,}/).filter(Boolean);
+const linkLabel = locale === 'pt' ? 'código' : 'code';
+const demoLabel = 'demo';
+---
+
+<h2 class="project__title">{project.title}</h2>
+<p class="project__tagline">{project.tagline[locale]}</p>
+
+{project.screenshot && <img class="project__shot" src={project.screenshot} alt={`${project.title} — screenshot`} loading="lazy" />}
+
+<div class="project__readme">
+  {paragraphs.map((p) => <p>{p}</p>)}
+</div>
+
+<ul class="tags" aria-label="stack">
+  {project.stack.map((item) => <li>{item}</li>)}
+</ul>
+
+<div class="project__footer">
+  <span class="status" data-status={project.status}>
+    {t.desktop.statusLabels[project.status]}
+  </span>
+  {project.links?.repo && <a href={project.links.repo} target="_blank" rel="noopener noreferrer">[{linkLabel}]</a>}
+  {project.links?.demo && <a href={project.links.demo} target="_blank" rel="noopener noreferrer">[{demoLabel}]</a>}
+</div>

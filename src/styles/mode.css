@@ -5,3 +5,8 @@
 [data-mode='desktop'] [data-shell='reader'] {
   display: none !important;
 }
+
+[data-mode='reader'] [data-when='desktop'],
+[data-mode='desktop'] [data-when='reader'] {
+  display: none !important;
+}
