@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "vitest run"
+    "test": "vitest run",
+    "smoke": "astro preview --port 4321 & sleep 3; node scripts/smoke.mjs"
   },
   "dependencies": {
     "astro": "^7.3.8"
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@astrojs/check": "latest",
     "happy-dom": "^20.14.6",
+    "playwright-core": "^1.64.0",
     "typescript": "latest",
     "vitest": "latest"
   }
