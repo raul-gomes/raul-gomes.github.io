@@ -1,6 +1,7 @@
 ---
 import '@styles/tokens.css';
 import '@styles/effects.css';
+import '@styles/mode.css';
 
 export type Locale = 'pt' | 'en';
 
@@ -15,7 +16,7 @@ const htmlLang = locale === 'pt' ? 'pt-BR' : 'en';
 ---
 
 <!doctype html>
-<html lang={htmlLang} data-locale={locale}>
+<html lang={htmlLang} data-locale={locale} data-mode="reader">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -26,6 +27,19 @@ const htmlLang = locale === 'pt' ? 'pt-BR' : 'en';
     <link rel="preload" href="/fonts/share-tech-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/vt323-400-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/fonts/fonts.css" />
+    <script is:inline>
+      (function () {
+        try {
+          var p = new URLSearchParams(location.search).get('mode');
+          var s = localStorage.getItem('portfolio.mode');
+          var m = p === 'desktop' || p === 'reader' ? p : s === 'desktop' || s === 'reader' ? s : 'reader';
+          localStorage.setItem('portfolio.mode', m);
+          document.documentElement.setAttribute('data-mode', m);
+        } catch (e) {
+          document.documentElement.setAttribute('data-mode', 'reader');
+        }
+      })();
+    </script>
   </head>
   <body class="scanlines">
     <slot />

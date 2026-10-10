@@ -1,0 +1,7 @@
+[data-mode='reader'] [data-shell='desktop'] {
+  display: none !important;
+}
+
+[data-mode='desktop'] [data-shell='reader'] {
+  display: none !important;
+}
