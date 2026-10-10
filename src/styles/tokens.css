@@ -1,0 +1,100 @@
+:root {
+  --bg: #0a0a0c;
+  --bg-2: #101015;
+  --bg-3: #16161d;
+  --amber: #ffb000;
+  --amber-dim: #a87400;
+  --amber-glow: rgba(255, 176, 0, 0.55);
+  --magenta: #ff2d95;
+  --cyan: #00e5ff;
+  --danger: #ff4d4d;
+  --ok: #39ff88;
+  --ink: #ffd39b;
+  --ink-dim: #b98a4a;
+  --line: #3a2c12;
+
+  --font-crt: 'VT323', 'Share Tech Mono', ui-monospace, 'Courier New', monospace;
+  --font-term: 'Share Tech Mono', 'IBM Plex Mono', ui-monospace, monospace;
+  --font-body: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.5rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  --z-base: 1;
+  --z-window: 100;
+  --z-taskbar: 900;
+  --z-overlay: 1000;
+
+  --dur-fast: 120ms;
+  --dur: 240ms;
+  --dur-slow: 600ms;
+
+  --radius: 2px;
+  --border: 1px solid var(--amber-dim);
+  --border-strong: 2px solid var(--amber);
+  --shadow-crt: 0 0 8px var(--amber-glow), 0 0 24px rgba(255, 176, 0, 0.18);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--cyan);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--cyan);
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--magenta);
+  border-bottom-color: var(--magenta);
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--magenta);
+  color: var(--bg);
+}
