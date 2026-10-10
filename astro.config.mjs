@@ -2,7 +2,10 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
+  // GitHub Pages do usuário (raul-gomes.github.io). Se o repositório for
+  // de projeto (ex.: raul-gomes/portfolio), troque `site` e defina `base: '/portfolio/'`.
   site: 'https://raul-gomes.github.io',
+  base: '/',
   i18n: {
     defaultLocale: 'pt',
     locales: ['pt', 'en'],
