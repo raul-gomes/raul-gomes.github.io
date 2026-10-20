@@ -41,21 +41,34 @@ check('desktop: power screen visible', await page.locator('[data-power-on]').isV
 await page.locator('[data-power-on]').click();
 await page.waitForSelector('[data-desk]:not([hidden])', { timeout: 5000 });
 check('desktop: boots to desk', await page.locator('.taskbar').isVisible());
-check('desktop: launchers rendered', (await page.locator('.taskbar__app').count()) === 6);
+check('desktop: desktop icons rendered', (await page.locator('.desk-icon').count()) === 8);
+check('desktop: themed folder icons', (await page.locator('.desk-icon[data-node="projetos"]').count()) === 1);
 
-await page.locator('.taskbar__app[data-app="projects"]').click();
-await page.waitForSelector('.app-window[data-win-id="projects"]', { timeout: 3000 });
-check('desktop: projects window opens', (await page.locator('.fm li').count()) === 4);
+const firstIcon = page.locator('.desk-icon[data-node="sobre"]');
+const ib = await firstIcon.boundingBox();
+const beforeLeft = await firstIcon.evaluate((el) => el.style.left);
+await page.mouse.move(ib.x + ib.width / 2, ib.y + ib.height / 2);
+await page.mouse.down();
+await page.mouse.move(ib.x + ib.width / 2 + 420, ib.y + ib.height / 2 + 260, { steps: 10 });
+await page.mouse.up();
+await page.waitForTimeout(60);
+const afterLeft = await firstIcon.evaluate((el) => el.style.left);
+check('desktop: icon drags freely', afterLeft !== beforeLeft);
 
-await page.locator('.fm li').first().click();
-await page.waitForSelector('.app-window[data-win-id="project-cafe-com-bpo"]', { timeout: 3000 });
-check('desktop: project detail opens', await page.locator('.app-window[data-win-id="project-cafe-com-bpo"]').isVisible());
+await page.locator('.desk-icon[data-node="projetos"]').dblclick();
+await page.waitForSelector('.app-window[data-win-id="folder-projetos"]', { timeout: 3000 });
+check('desktop: projects folder opens', (await page.locator('.app-window[data-win-id="folder-projetos"] .fm li').count()) === 4);
+
+await page.locator('.app-window[data-win-id="folder-projetos"] .fm li').first().dblclick();
+await page.waitForSelector('.app-window[data-win-id="doc-cafe-com-bpo"]', { timeout: 3000 });
+check('desktop: project detail opens', await page.locator('.app-window[data-win-id="doc-cafe-com-bpo"]').isVisible());
+check('desktop: detail has gallery', (await page.locator('.app-window[data-win-id="doc-cafe-com-bpo"] .detail__gallery li').count()) >= 1);
 check('desktop: two windows open', (await page.locator('.app-window').count()) === 2);
 
-await page.locator('.app-window[data-win-id="project-cafe-com-bpo"] [data-act="close"]').click();
-check('desktop: window closes', (await page.locator('.app-window[data-win-id="project-cafe-com-bpo"]').count()) === 0);
+await page.locator('.app-window[data-win-id="doc-cafe-com-bpo"] [data-act="close"]').click();
+check('desktop: window closes', (await page.locator('.app-window[data-win-id="doc-cafe-com-bpo"]').count()) === 0);
 
-await page.locator('.taskbar__app[data-app="terminal"]').click();
+await page.locator('.desk-icon[data-node="terminal"]').dblclick();
 await page.waitForSelector('.app-window[data-win-id="terminal"]', { timeout: 3000 });
 const termInput = page.locator('.app-window[data-win-id="terminal"] [data-term-input]');
 await termInput.fill('whoami');
@@ -67,17 +80,17 @@ check(
     (await page.locator('.app-window[data-win-id="terminal"] .term__out').innerText()).includes('Engenheiro'),
 );
 
-await termInput.fill('open stack');
+await termInput.fill('open skills');
 await termInput.press('Enter');
 await page.waitForTimeout(150);
-check('terminal: open stack works', (await page.locator('.app-window[data-win-id="stack"]').count()) === 1);
+check('terminal: open skills works', (await page.locator('.app-window[data-win-id="folder-skills"]').count()) === 1);
 
 await termInput.fill('bogus');
 await termInput.press('Enter');
 await page.waitForTimeout(120);
 check('terminal: unknown command', (await page.locator('.app-window[data-win-id="terminal"] .term__out').innerText()).includes('bogus'));
 
-const win = page.locator('.app-window[data-win-id="stack"]');
+const win = page.locator('.app-window[data-win-id="folder-skills"]');
 const before = await win.boundingBox();
 const bar = win.locator('.app-window__bar');
 const bb = await bar.boundingBox();

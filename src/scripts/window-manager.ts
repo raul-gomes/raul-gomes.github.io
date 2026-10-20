@@ -66,8 +66,10 @@ export class WindowManager {
     el.setAttribute('aria-label', options.title);
     el.style.width = `${width}px`;
     el.style.height = `${height}px`;
-    el.style.left = `${40 + offset}px`;
-    el.style.top = `${32 + offset}px`;
+    const left = clamp(300 + offset, 8, Math.max(8, this.layer.clientWidth - width - 8));
+    const top = clamp(32 + offset, 8, Math.max(8, this.layer.clientHeight - height - 8));
+    el.style.left = `${left}px`;
+    el.style.top = `${top}px`;
 
     el.innerHTML = `
       <div class="app-window__bar" data-drag>

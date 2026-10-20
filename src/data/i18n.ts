@@ -3,9 +3,11 @@ import type { Locale } from './types';
 export interface AppLabels {
   about: string;
   projects: string;
-  stack: string;
-  terminal: string;
+  experience: string;
+  education: string;
+  skills: string;
   contact: string;
+  terminal: string;
   cv: string;
 }
 
@@ -31,9 +33,13 @@ export interface UIStrings {
   desktop: {
     welcome: string;
     hint: string;
+    selectHint: string;
     fileManager: string;
     readme: string;
     noScreenshot: string;
+    awards: string;
+    certifications: string;
+    location: string;
     statusLabels: { live: string; wip: string; placeholder: string };
   };
   apps: AppLabels;
@@ -77,11 +83,15 @@ export const ui: Record<Locale, UIStrings> = {
       'CARREGANDO INTERFACE ........ OK',
     ],
     desktop: {
-      welcome: 'SISTEMA ONLINE. Clique duas vezes nos itens da barra para abrir.',
-      hint: 'Dica: arraste as janelas, feche e reabra. Ou use o terminal.',
-      fileManager: 'diretório de projetos',
+      welcome: 'SISTEMA ONLINE. Dê um duplo clique nos ícones da área de trabalho.',
+      hint: 'Dica: duplo clique abre pastas e arquivos. Arraste as janelas. Ou use o terminal.',
+      selectHint: 'duplo clique para abrir',
+      fileManager: 'diretório',
       readme: 'LEIA-ME',
       noScreenshot: '[ sem captura de tela ]',
+      awards: 'prêmios.txt',
+      certifications: 'certificações.txt',
+      location: 'local',
       statusLabels: {
         live: 'no ar',
         wip: 'em construção',
@@ -91,9 +101,11 @@ export const ui: Record<Locale, UIStrings> = {
     apps: {
       about: 'sobre.txt',
       projects: 'projetos',
-      stack: 'stack',
-      terminal: 'terminal',
+      experience: 'experiencia',
+      education: 'formacao',
+      skills: 'skills',
       contact: 'contato',
+      terminal: 'terminal',
       cv: 'curriculo.pdf',
     },
     terminal: {
@@ -104,7 +116,7 @@ export const ui: Record<Locale, UIStrings> = {
         { cmd: 'help', desc: 'lista os comandos' },
         { cmd: 'whoami', desc: 'perfil resumido' },
         { cmd: 'ls', desc: 'lista os apps disponíveis' },
-        { cmd: 'open <app>', desc: 'abre uma janela (about, projects, stack, contact)' },
+        { cmd: 'open <app>', desc: 'abre uma janela (sobre, projetos, experiencia, formacao, skills, contato)' },
         { cmd: 'lang pt | en', desc: 'troca o idioma' },
         { cmd: 'mode reader', desc: 'volta para o modo leitura' },
         { cmd: 'clear', desc: 'limpa a tela' },
@@ -146,11 +158,15 @@ export const ui: Record<Locale, UIStrings> = {
       'LOADING INTERFACE ........ OK',
     ],
     desktop: {
-      welcome: 'SYSTEM ONLINE. Double-click the bar items to open apps.',
-      hint: 'Tip: drag windows around, close and reopen. Or use the terminal.',
-      fileManager: 'projects directory',
+      welcome: 'SYSTEM ONLINE. Double-click the desktop icons to open them.',
+      hint: 'Tip: double-click opens folders and files. Drag windows around. Or use the terminal.',
+      selectHint: 'double-click to open',
+      fileManager: 'directory',
       readme: 'README',
       noScreenshot: '[ no screenshot ]',
+      awards: 'awards.txt',
+      certifications: 'certifications.txt',
+      location: 'location',
       statusLabels: {
         live: 'live',
         wip: 'work in progress',
@@ -160,9 +176,11 @@ export const ui: Record<Locale, UIStrings> = {
     apps: {
       about: 'about.txt',
       projects: 'projects',
-      stack: 'stack',
-      terminal: 'terminal',
+      experience: 'experience',
+      education: 'education',
+      skills: 'skills',
       contact: 'contact',
+      terminal: 'terminal',
       cv: 'resume.pdf',
     },
     terminal: {
@@ -173,7 +191,7 @@ export const ui: Record<Locale, UIStrings> = {
         { cmd: 'help', desc: 'list the commands' },
         { cmd: 'whoami', desc: 'short profile' },
         { cmd: 'ls', desc: 'list available apps' },
-        { cmd: 'open <app>', desc: 'open a window (about, projects, stack, contact)' },
+        { cmd: 'open <app>', desc: 'open a window (sobre, projetos, experiencia, formacao, skills, contato)' },
         { cmd: 'lang pt | en', desc: 'switch language' },
         { cmd: 'mode reader', desc: 'return to reader mode' },
         { cmd: 'clear', desc: 'clear the screen' },

@@ -19,7 +19,7 @@ export interface TerminalContext {
   opened: string;
 }
 
-export const KNOWN_APPS = ['about', 'projects', 'stack', 'contact'] as const;
+export const KNOWN_APPS = ['sobre', 'projetos', 'experiencia', 'formacao', 'skills', 'contato', 'curriculo'] as const;
 
 export function runCommand(raw: string, ctx: TerminalContext): CommandResult {
   const input = raw.trim();

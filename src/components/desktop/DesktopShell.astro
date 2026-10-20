@@ -1,9 +1,11 @@
 ---
 import { profile } from '@data/profile';
-import { projects } from '@data/projects';
 import { stack } from '@data/stack';
+import { awards, certifications } from '@data/certs';
 import { ui } from '@data/i18n';
 import type { Locale } from '@data/types';
+import { getPage, getProjects, getExperience, type SectionView } from '@lib/content';
+import type { DesktopNode, DesktopDetail } from '@scripts/desktop';
 import ModeToggle from '@components/shared/ModeToggle.astro';
 import LangToggle from '@components/shared/LangToggle.astro';
 import '@styles/desktop.css';
@@ -14,6 +16,144 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = ui[locale];
+
+const [aboutPage, skillsPage, educationPage, contactPage, projects, experience] = await Promise.all([
+  getPage('about', locale),
+  getPage('skills', locale),
+  getPage('education', locale),
+  getPage('contact', locale),
+  getProjects(locale),
+  getExperience(locale),
+]);
+
+const esc = (value: string): string =>
+  value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+const skillIcons = ['pacman', 'invader', 'tetris', 'mushroom', 'pokeball', 'triforce'];
+
+function toDetail(view: SectionView): DesktopDetail {
+  return {
+    title: view.title,
+    tagline: view.tagline,
+    bodyHtml: view.bodyHtml,
+    tags: view.tags,
+    status: view.status,
+    links: view.links,
+    gallery: view.gallery,
+    cover: view.cover,
+    company: view.company,
+    period: view.period,
+  };
+}
+
+function toDoc(view: SectionView): DesktopNode {
+  return { id: view.slug, label: view.title, icon: view.icon, kind: 'document', detail: toDetail(view) };
+}
+
+const aboutNode: DesktopNode = {
+  id: 'sobre',
+  label: t.apps.about,
+  icon: 'sauron',
+  kind: 'document',
+  detail: {
+    title: aboutPage?.title ?? profile.name,
+    tagline: profile.role[locale],
+    bodyHtml: aboutPage?.bodyHtml ?? '',
+    tags: [],
+    links: [],
+    gallery: [],
+  },
+};
+
+const projectsFolder: DesktopNode = {
+  id: 'projetos',
+  label: t.apps.projects,
+  icon: 'triforce',
+  kind: 'folder',
+  children: projects.map(toDoc),
+};
+
+const experienceFolder: DesktopNode = {
+  id: 'experiencia',
+  label: t.apps.experience,
+  icon: 'lightsaber',
+  kind: 'folder',
+  children: experience.map(toDoc),
+};
+
+const awardsHtml = `<ul>${awards
+  .map((a) => `<li><strong>${esc(a.title[locale])}</strong><br>${esc(a.issuer)} — ${a.year}</li>`)
+  .join('')}</ul>`;
+const certsHtml = `<ul>${certifications
+  .map((c) => `<li><strong>${esc(c.name)}</strong><br>${esc(c.issuer)} — ${c.year}</li>`)
+  .join('')}</ul>`;
+
+const educationFolder: DesktopNode = {
+  id: 'formacao',
+  label: t.apps.education,
+  icon: 'book',
+  kind: 'folder',
+  intro: educationPage?.bodyHtml,
+  children: [
+    { id: 'premios', label: t.desktop.awards, icon: 'deathstar', kind: 'document', detail: { title: t.desktop.awards, bodyHtml: awardsHtml, tags: [], links: [], gallery: [] } },
+    { id: 'certificacoes', label: t.desktop.certifications, icon: 'book', kind: 'document', detail: { title: t.desktop.certifications, bodyHtml: certsHtml, tags: [], links: [], gallery: [] } },
+  ],
+};
+
+const skillsFolder: DesktopNode = {
+  id: 'skills',
+  label: t.apps.skills,
+  icon: 'pokeball',
+  kind: 'folder',
+  intro: skillsPage?.bodyHtml,
+  children: stack.map((group, i) => ({
+    id: `skill-${group.id}`,
+    label: group.label[locale],
+    icon: skillIcons[i % skillIcons.length],
+    kind: 'document',
+    detail: { title: group.label[locale], bodyHtml: '', tags: group.items, links: [], gallery: [] },
+  })),
+};
+
+const contactFolder: DesktopNode = {
+  id: 'contato',
+  label: t.apps.contact,
+  icon: 'magnifier',
+  kind: 'folder',
+  intro: contactPage?.bodyHtml,
+  children: [
+    { id: 'email', label: 'email', icon: 'magnifier', kind: 'link', href: `mailto:${profile.email}` },
+    { id: 'github', label: 'github', icon: 'matrix', kind: 'link', href: profile.github, external: true },
+    { id: 'linkedin', label: 'linkedin', icon: 'glasses', kind: 'link', href: profile.linkedin, external: true },
+    { id: 'local', label: t.desktop.location, icon: 'book', kind: 'document', detail: { title: t.desktop.location, bodyHtml: `<p>${esc(profile.location[locale])}</p>`, tags: [], links: [], gallery: [] } },
+  ],
+};
+
+const cvNode: DesktopNode = {
+  id: 'curriculo',
+  label: t.apps.cv,
+  icon: 'book',
+  kind: 'link',
+  href: profile.cvPath,
+};
+
+const terminalNode: DesktopNode = {
+  id: 'terminal',
+  label: t.apps.terminal,
+  icon: 'arcade',
+  kind: 'terminal',
+};
+
+const nodes: DesktopNode[] = [
+  aboutNode,
+  projectsFolder,
+  experienceFolder,
+  educationFolder,
+  skillsFolder,
+  contactFolder,
+  cvNode,
+  terminalNode,
+];
 
 const payload = {
   locale,
@@ -28,19 +168,8 @@ const payload = {
     linkedin: profile.linkedin,
     cvPath: profile.cvPath,
     bioShort: profile.bioShort[locale],
-    bioLong: profile.bioLong[locale],
   },
-  projects: projects.map((p) => ({
-    id: p.id,
-    title: p.title,
-    tagline: p.tagline[locale],
-    readme: p.readme[locale],
-    stack: p.stack,
-    status: p.status,
-    links: p.links,
-    screenshot: p.screenshot,
-  })),
-  stack: stack.map((g) => ({ label: g.label[locale], items: g.items })),
+  nodes,
 };
 
 const json = JSON.stringify(payload).replace(/</g, '\\u003c');
@@ -49,6 +178,7 @@ const json = JSON.stringify(payload).replace(/</g, '\\u003c');
 <div data-desktop-root>
   <div class="desk" data-desk hidden>
     <canvas class="desk__canvas" data-rain aria-hidden="true"></canvas>
+    <div class="desk__icon-grid" data-icon-grid></div>
     <p class="desk__hint">{t.desktop.hint}</p>
     <div class="win-layer" data-win-layer></div>
     <div class="taskbar">

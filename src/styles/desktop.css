@@ -18,11 +18,61 @@
 
 .desk__icon-grid {
   position: absolute;
-  top: var(--space-4);
-  left: var(--space-4);
+  inset: 0 0 2.75rem 0;
+  z-index: 2;
+}
+
+.desk-icon {
+  position: absolute;
+  width: 8.5rem;
+  padding: var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  align-items: center;
+  gap: var(--space-2);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--ink);
+  font-family: var(--font-term);
+  font-size: var(--fs-sm);
+  text-align: center;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  -webkit-user-select: none;
+}
+
+.desk-icon[data-dragging='true'] {
+  cursor: grabbing;
+  z-index: 3;
+  opacity: 0.85;
+}
+
+.desk-icon__img {
+  display: block;
+  filter: drop-shadow(0 0 6px rgba(255, 176, 0, 0.25));
+}
+
+.desk-icon__label {
+  padding: 1px 4px;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.desk-icon:hover,
+.desk-icon:focus-visible {
+  border-color: var(--amber-dim);
+}
+
+.desk-icon[data-selected='true'] {
+  border-color: var(--amber);
+  background: rgba(255, 176, 0, 0.08);
+}
+
+.desk-icon[data-selected='true'] .desk-icon__label {
+  color: var(--bg);
+  background: var(--amber);
 }
 
 .desk__hint {
@@ -34,17 +84,21 @@
   font-size: var(--fs-xs);
   color: var(--amber-dim);
   text-align: right;
+  pointer-events: none;
 }
 
 .win-layer {
   position: absolute;
   inset: 0 0 2.75rem 0;
+  z-index: 5;
+  pointer-events: none;
 }
 
 .app-window {
+  pointer-events: auto;
   position: absolute;
-  min-width: 16rem;
-  min-height: 8rem;
+  min-width: 18rem;
+  min-height: 9rem;
   background: var(--bg-2);
   border: var(--border-strong);
   box-shadow: 0 0 0 1px var(--bg), 0 10px 30px rgba(0, 0, 0, 0.6), var(--shadow-crt);
@@ -145,6 +199,7 @@
   color: var(--ok);
   padding: var(--space-1) var(--space-2);
   border: 1px solid var(--line);
+  white-space: nowrap;
 }
 
 .taskbar__apps {
@@ -153,14 +208,20 @@
   overflow: hidden;
 }
 
-.taskbar__app {
+.taskbar__task {
   padding: var(--space-1) var(--space-2);
+  min-width: 6rem;
+  max-width: 11rem;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border: var(--border);
   color: var(--amber-dim);
-  white-space: nowrap;
+  background: transparent;
 }
 
-.taskbar__app[data-active='true'] {
+.taskbar__task[data-active='true'] {
   color: var(--bg);
   background: var(--amber);
 }
@@ -256,34 +317,72 @@
   font-family: var(--font-term);
 }
 
+.fm__hint {
+  margin: var(--space-3) 0 0;
+  color: var(--amber-dim);
+  font-family: var(--font-term);
+  font-size: var(--fs-xs);
+}
+
+.folder__intro {
+  margin: 0 0 var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px dotted var(--line);
+  color: var(--ink);
+}
+
 .fm {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: var(--space-2);
 }
 
 .fm li {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-2) var(--space-3);
-  border-bottom: 1px dotted var(--line);
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-2);
+  border: 1px solid transparent;
   cursor: pointer;
   font-family: var(--font-term);
+  color: var(--ink);
+  text-align: center;
+  outline: none;
 }
 
 .fm li:hover,
 .fm li:focus-visible {
+  border-color: var(--amber-dim);
   background: var(--bg-3);
   color: var(--amber);
 }
 
+.fm li[data-selected='true'] {
+  border-color: var(--amber);
+  background: rgba(255, 176, 0, 0.08);
+}
+
+.fm li[data-selected='true'] .fm__name {
+  color: var(--bg);
+  background: var(--amber);
+}
+
 .fm__icon {
+  display: inline-flex;
+  align-items: center;
   color: var(--cyan);
+  filter: drop-shadow(0 0 6px rgba(255, 176, 0, 0.2));
 }
 
 .fm__name {
-  flex: 1;
+  padding: 1px 4px;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .fm__empty {
@@ -295,12 +394,145 @@
   margin-bottom: var(--space-4);
 }
 
+.detail__cover {
+  width: 100%;
+  border: var(--border);
+  margin-bottom: var(--space-3);
+}
+
+.detail__title {
+  font-family: var(--font-crt);
+  font-size: var(--fs-xl);
+  margin: 0;
+  color: var(--amber);
+  text-shadow: 0 0 3px var(--amber-glow);
+}
+
+.detail__tagline {
+  color: var(--cyan);
+  margin: var(--space-1) 0 var(--space-2);
+}
+
+.detail__meta {
+  color: var(--amber-dim);
+  font-size: var(--fs-sm);
+  margin: 0 0 var(--space-4);
+}
+
+.detail__gallery {
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: var(--space-3);
+}
+
+.detail__gallery figure {
+  margin: 0;
+}
+
+.detail__gallery img {
+  width: 100%;
+  display: block;
+  border: var(--border);
+}
+
+.detail__gallery figcaption {
+  font-size: var(--fs-xs);
+  color: var(--amber-dim);
+  margin-top: 2px;
+}
+
+.detail__body {
+  margin: 0 0 var(--space-4);
+  color: var(--ink);
+}
+
+.detail__body h2,
+.detail__body h3,
+.folder__intro h2,
+.folder__intro h3 {
+  font-family: var(--font-term);
+  color: var(--magenta);
+  font-size: var(--fs-md);
+  margin: var(--space-3) 0 var(--space-2);
+}
+
+.detail__body p,
+.folder__intro p {
+  margin: 0 0 var(--space-3);
+}
+
+.detail__body ul,
+.folder__intro ul,
+.detail__body ol {
+  margin: 0 0 var(--space-3);
+  padding-left: 1.3rem;
+}
+
+.detail__body strong,
+.folder__intro strong {
+  color: var(--amber);
+}
+
+.detail__body a,
+.folder__intro a {
+  color: var(--cyan);
+}
+
+.detail__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-4);
+}
+
+.tags li {
+  font-size: var(--fs-xs);
+  color: var(--cyan);
+  border: 1px solid var(--line);
+  padding: 1px var(--space-2);
+}
+
+.status {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.status[data-status='live'] {
+  color: var(--ok);
+}
+
+.status[data-status='wip'] {
+  color: var(--amber);
+}
+
+.status[data-status='placeholder'] {
+  color: var(--danger);
+}
+
 .term {
   display: flex;
   flex-direction: column;
   height: 100%;
   font-family: var(--font-term);
   font-size: var(--fs-sm);
+  background: #000;
+  color: var(--ok);
+  margin: calc(var(--space-4) * -1);
+  padding: var(--space-3);
 }
 
 .term__out {
@@ -343,4 +575,3 @@
   font-size: inherit;
   outline: none;
 }
-

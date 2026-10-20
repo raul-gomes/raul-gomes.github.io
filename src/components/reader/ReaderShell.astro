@@ -1,11 +1,10 @@
 ---
 import { profile } from '@data/profile';
-import { projects } from '@data/projects';
 import { stack } from '@data/stack';
-import { experience } from '@data/experience';
 import { awards, certifications } from '@data/certs';
 import { ui } from '@data/i18n';
 import type { Locale } from '@data/types';
+import { getPage, getProjects, getExperience } from '@lib/content';
 import ModeToggle from '@components/shared/ModeToggle.astro';
 import LangToggle from '@components/shared/LangToggle.astro';
 import ProjectBody from '@components/shared/ProjectBody.astro';
@@ -18,6 +17,12 @@ const { locale } = Astro.props;
 const t = ui[locale];
 const s = t.sections;
 const pad = (n: number) => String(n).padStart(2, '0');
+
+const [aboutPage, projects, experience] = await Promise.all([
+  getPage('about', locale),
+  getProjects(locale),
+  getExperience(locale),
+]);
 
 const nav = [
   { href: '#sobre', label: s.bio },
@@ -58,7 +63,7 @@ const nav = [
       </h2>
       <div class="bio">
         <p>{profile.bioShort[locale]}</p>
-        {profile.bioLong[locale].split(/\n{2,}/).map((p) => <p>{p}</p>)}
+        {aboutPage && <div class="bio__body" set:html={aboutPage.bodyHtml} />}
       </div>
     </section>
 
@@ -71,11 +76,11 @@ const nav = [
         {projects.map((project) => (
           <article class="win">
             <div class="win__bar">
-              <span class="win__title">projeto://{project.id}</span>
+              <span class="win__title">projeto://{project.slug}</span>
               <span class="win__dots"><i></i><i></i><i></i></span>
             </div>
             <div class="win__body">
-              <ProjectBody project={project} locale={locale} />
+              <ProjectBody view={project} locale={locale} />
             </div>
           </article>
         ))}
@@ -105,11 +110,11 @@ const nav = [
         {experience.map((job) => (
           <li>
             <div class="timeline__head">
-              <span class="timeline__role">{job.role[locale]}</span>
+              <span class="timeline__role">{job.title}</span>
               <span class="timeline__period">{job.period}</span>
             </div>
             <div class="timeline__company">{job.company}</div>
-            <p>{job.summary[locale]}</p>
+            <div class="timeline__summary" set:html={job.bodyHtml} />
           </li>
         ))}
       </ul>

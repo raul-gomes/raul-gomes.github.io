@@ -358,9 +358,49 @@
   font-family: var(--font-term);
 }
 
-.timeline p {
-  margin: var(--space-1) 0 0;
+.timeline__summary {
   font-size: var(--fs-sm);
+}
+
+.timeline__summary p {
+  margin: var(--space-1) 0 0;
+}
+
+.project__readme h2,
+.project__readme h3,
+.bio__body h2,
+.bio__body h3,
+.timeline__summary h2,
+.timeline__summary h3 {
+  font-family: var(--font-term);
+  font-size: var(--fs-md);
+  color: var(--magenta);
+  margin: var(--space-4) 0 var(--space-2);
+}
+
+.project__readme p,
+.bio__body p,
+.timeline__summary p {
+  margin: 0 0 var(--space-3);
+}
+
+.project__readme ul,
+.bio__body ul,
+.timeline__summary ul {
+  margin: 0 0 var(--space-3);
+  padding-left: 1.3rem;
+}
+
+.project__readme strong,
+.bio__body strong,
+.timeline__summary strong {
+  color: var(--amber);
+}
+
+.project__readme a,
+.bio__body a,
+.timeline__summary a {
+  color: var(--cyan);
 }
 
 .records {

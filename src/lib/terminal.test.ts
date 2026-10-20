@@ -33,8 +33,8 @@ describe('runCommand', () => {
   });
 
   it('opens a known app', () => {
-    const result = runCommand('open projects', ctx);
-    expect(result.action).toEqual({ type: 'open', app: 'projects' });
+    const result = runCommand('open projetos', ctx);
+    expect(result.action).toEqual({ type: 'open', app: 'projetos' });
   });
 
   it('rejects an unknown app', () => {

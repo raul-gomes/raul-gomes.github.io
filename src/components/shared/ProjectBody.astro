@@ -1,36 +1,32 @@
 ---
 import { ui } from '@data/i18n';
-import type { Locale, Project } from '@data/types';
+import type { Locale } from '@data/types';
+import type { SectionView } from '@lib/content';
 
 interface Props {
-  project: Project;
+  view: SectionView;
   locale: Locale;
 }
 
-const { project, locale } = Astro.props;
+const { view, locale } = Astro.props;
 const t = ui[locale];
-const paragraphs = project.readme[locale].split(/\n{2,}/).filter(Boolean);
-const linkLabel = locale === 'pt' ? 'código' : 'code';
-const demoLabel = 'demo';
+const status = view.status ? t.desktop.statusLabels[view.status] : '';
 ---
 
-<h2 class="project__title">{project.title}</h2>
-<p class="project__tagline">{project.tagline[locale]}</p>
+<h2 class="project__title">{view.title}</h2>
+{view.tagline && <p class="project__tagline">{view.tagline}</p>}
 
-{project.screenshot && <img class="project__shot" src={project.screenshot} alt={`${project.title} — screenshot`} loading="lazy" />}
+{view.cover && <img class="project__shot" src={view.cover} alt={`${view.title} — screenshot`} loading="lazy" />}
 
-<div class="project__readme">
-  {paragraphs.map((p) => <p>{p}</p>)}
-</div>
+<div class="project__readme" set:html={view.bodyHtml} />
 
-<ul class="tags" aria-label="stack">
-  {project.stack.map((item) => <li>{item}</li>)}
-</ul>
+{view.tags.length > 0 && (
+  <ul class="tags" aria-label="stack">
+    {view.tags.map((item) => <li>{item}</li>)}
+  </ul>
+)}
 
 <div class="project__footer">
-  <span class="status" data-status={project.status}>
-    {t.desktop.statusLabels[project.status]}
-  </span>
-  {project.links?.repo && <a href={project.links.repo} target="_blank" rel="noopener noreferrer">[{linkLabel}]</a>}
-  {project.links?.demo && <a href={project.links.demo} target="_blank" rel="noopener noreferrer">[{demoLabel}]</a>}
+  {status && <span class="status" data-status={view.status}>{status}</span>}
+  {view.links.map((link) => <a href={link.href} target="_blank" rel="noopener noreferrer">[{link.label}]</a>)}
 </div>
