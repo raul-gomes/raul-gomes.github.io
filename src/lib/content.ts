@@ -1,6 +1,18 @@
 import { getCollection } from 'astro:content';
 import type { Locale } from '@data/types';
 
+const imageUrls = import.meta.glob('../img/**/*.{png,jpg,jpeg,webp,avif,gif,svg}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+}) as Record<string, string>;
+
+function resolveImage(src: string): string {
+  if (!src.startsWith('src/img/')) return src;
+  const key = `../${src.slice('src/'.length)}`;
+  return imageUrls[key] ?? src;
+}
+
 export interface GalleryImage {
   src: string;
   caption?: string;
@@ -53,8 +65,10 @@ function toView(entry: EntryLike): SectionView {
     status: data.status as ContentStatus | undefined,
     tags: Array.isArray(data.stack) ? (data.stack as string[]) : [],
     links: Array.isArray(data.links) ? (data.links as ContentLink[]) : [],
-    cover: data.cover ? String(data.cover) : undefined,
-    gallery: Array.isArray(data.gallery) ? (data.gallery as GalleryImage[]) : [],
+    cover: data.cover ? resolveImage(String(data.cover)) : undefined,
+    gallery: Array.isArray(data.gallery)
+      ? (data.gallery as GalleryImage[]).map((image) => ({ ...image, src: resolveImage(image.src) }))
+      : [],
     company: data.company ? String(data.company) : undefined,
     period: data.period ? String(data.period) : undefined,
     kind: data.kind ? String(data.kind) : undefined,

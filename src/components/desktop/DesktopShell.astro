@@ -2,12 +2,14 @@
 import { profile } from '@data/profile';
 import { stack } from '@data/stack';
 import { awards, certifications } from '@data/certs';
+import { education, languages } from '@data/education';
 import { ui } from '@data/i18n';
 import type { Locale } from '@data/types';
 import { getPage, getProjects, getExperience, type SectionView } from '@lib/content';
 import type { DesktopNode, DesktopDetail } from '@scripts/desktop';
 import ModeToggle from '@components/shared/ModeToggle.astro';
 import LangToggle from '@components/shared/LangToggle.astro';
+import SkillInventory from '@components/reader/SkillInventory.astro';
 import '@styles/desktop.css';
 
 interface Props {
@@ -17,9 +19,8 @@ interface Props {
 const { locale } = Astro.props;
 const t = ui[locale];
 
-const [aboutPage, skillsPage, educationPage, contactPage, projects, experience] = await Promise.all([
+const [aboutPage, educationPage, contactPage, projects, experience] = await Promise.all([
   getPage('about', locale),
-  getPage('skills', locale),
   getPage('education', locale),
   getPage('contact', locale),
   getProjects(locale),
@@ -29,7 +30,7 @@ const [aboutPage, skillsPage, educationPage, contactPage, projects, experience] 
 const esc = (value: string): string =>
   value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-const skillIcons = ['pacman', 'invader', 'tetris', 'mushroom', 'pokeball', 'triforce'];
+const telHref = `tel:+55${profile.phone.replace(/\D/g, '')}`;
 
 function toDetail(view: SectionView): DesktopDetail {
   return {
@@ -48,6 +49,80 @@ function toDetail(view: SectionView): DesktopDetail {
 
 function toDoc(view: SectionView): DesktopNode {
   return { id: view.slug, label: view.title, icon: view.icon, kind: 'document', detail: toDetail(view) };
+}
+
+function slugify(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function imageFileName(src: string, caption: string | undefined, index: number): string {
+  const source = src.split('/').pop() ?? '';
+  const dot = source.lastIndexOf('.');
+  const ext = dot === -1 ? '' : source.slice(dot);
+  const base = slugify(caption ?? source.slice(0, dot === -1 ? undefined : dot)) || `foto-${index + 1}`;
+  return `${base}${ext}`;
+}
+
+function toProjectFolder(view: SectionView): DesktopNode {
+  const used = new Set<string>(['info.txt']);
+  const uniqueName = (name: string): string => {
+    let candidate = name;
+    let n = 2;
+    while (used.has(candidate)) {
+      const dot = name.lastIndexOf('.');
+      candidate = dot === -1 ? `${name}-${n}` : `${name.slice(0, dot)}-${n}${name.slice(dot)}`;
+      n += 1;
+    }
+    used.add(candidate);
+    return candidate;
+  };
+
+  const photoIds = view.gallery.map((_, index) => `${view.slug}-foto-${index + 1}`);
+
+  const photos: DesktopNode[] = view.gallery.map((image, index) => {
+    const fileName = uniqueName(imageFileName(image.src, image.caption, index));
+    return {
+      id: photoIds[index],
+      label: fileName,
+      fileName,
+      icon: 'image',
+      kind: 'image',
+      src: image.src,
+      caption: image.caption,
+      galleryIds: photoIds,
+    };
+  });
+
+  const links: DesktopNode[] = view.links.map((link, index) => {
+    const fileName = uniqueName(`${slugify(link.label) || 'link'}.url`);
+    return {
+      id: `${view.slug}-link-${index + 1}`,
+      label: fileName,
+      fileName,
+      icon: 'link',
+      kind: 'link',
+      href: link.href,
+      external: true,
+    };
+  });
+
+  return {
+    id: view.slug,
+    label: view.title,
+    icon: 'folder',
+    iconSrc: view.cover,
+    kind: 'folder',
+    children: [
+      { id: `${view.slug}-info`, label: 'info.txt', fileName: 'info.txt', icon: 'document', kind: 'document', detail: toDetail(view) },
+      ...photos,
+      ...links,
+    ],
+  };
 }
 
 const aboutNode: DesktopNode = {
@@ -70,7 +145,7 @@ const projectsFolder: DesktopNode = {
   label: t.apps.projects,
   icon: 'triforce',
   kind: 'folder',
-  children: projects.map(toDoc),
+  children: projects.map(toProjectFolder),
 };
 
 const experienceFolder: DesktopNode = {
@@ -87,6 +162,10 @@ const awardsHtml = `<ul>${awards
 const certsHtml = `<ul>${certifications
   .map((c) => `<li><strong>${esc(c.name)}</strong><br>${esc(c.issuer)} — ${c.year}</li>`)
   .join('')}</ul>`;
+const educationHtml = `<ul>${education
+  .map((e) => `<li><strong>${esc(e.course[locale])}</strong><br>${esc(e.institution[locale])} — ${esc(e.period)}</li>`)
+  .join('')}</ul>`;
+const languagesHtml = `<ul>${languages.map((item) => `<li>${esc(item[locale])}</li>`).join('')}</ul>`;
 
 const educationFolder: DesktopNode = {
   id: 'formacao',
@@ -95,24 +174,19 @@ const educationFolder: DesktopNode = {
   kind: 'folder',
   intro: educationPage?.bodyHtml,
   children: [
+    { id: 'formacao-academica', label: t.desktop.educationList, icon: 'book', kind: 'document', detail: { title: t.desktop.educationList, bodyHtml: educationHtml, tags: [], links: [], gallery: [] } },
     { id: 'premios', label: t.desktop.awards, icon: 'deathstar', kind: 'document', detail: { title: t.desktop.awards, bodyHtml: awardsHtml, tags: [], links: [], gallery: [] } },
     { id: 'certificacoes', label: t.desktop.certifications, icon: 'book', kind: 'document', detail: { title: t.desktop.certifications, bodyHtml: certsHtml, tags: [], links: [], gallery: [] } },
+    { id: 'idiomas', label: t.desktop.languages, icon: 'book', kind: 'document', detail: { title: t.desktop.languages, bodyHtml: languagesHtml, tags: [], links: [], gallery: [] } },
   ],
 };
 
-const skillsFolder: DesktopNode = {
+const skillsNode: DesktopNode = {
   id: 'skills',
-  label: t.apps.skills,
-  icon: 'pokeball',
-  kind: 'folder',
-  intro: skillsPage?.bodyHtml,
-  children: stack.map((group, i) => ({
-    id: `skill-${group.id}`,
-    label: group.label[locale],
-    icon: skillIcons[i % skillIcons.length],
-    kind: 'document',
-    detail: { title: group.label[locale], bodyHtml: '', tags: group.items, links: [], gallery: [] },
-  })),
+  label: 'skills.exe',
+  fileName: 'skills.exe',
+  icon: 'arcade',
+  kind: 'skills',
 };
 
 const contactFolder: DesktopNode = {
@@ -123,6 +197,8 @@ const contactFolder: DesktopNode = {
   intro: contactPage?.bodyHtml,
   children: [
     { id: 'email', label: 'email', icon: 'magnifier', kind: 'link', href: `mailto:${profile.email}` },
+    { id: 'telefone', label: t.desktop.phone, icon: 'profile', kind: 'link', href: telHref },
+    { id: 'site', label: t.desktop.website, icon: 'magnifier', kind: 'link', href: profile.website, external: true },
     { id: 'github', label: 'github', icon: 'matrix', kind: 'link', href: profile.github, external: true },
     { id: 'linkedin', label: 'linkedin', icon: 'glasses', kind: 'link', href: profile.linkedin, external: true },
     { id: 'local', label: t.desktop.location, icon: 'book', kind: 'document', detail: { title: t.desktop.location, bodyHtml: `<p>${esc(profile.location[locale])}</p>`, tags: [], links: [], gallery: [] } },
@@ -149,7 +225,7 @@ const nodes: DesktopNode[] = [
   projectsFolder,
   experienceFolder,
   educationFolder,
-  skillsFolder,
+  skillsNode,
   contactFolder,
   cvNode,
   terminalNode,
@@ -164,6 +240,8 @@ const payload = {
     role: profile.role[locale],
     location: profile.location[locale],
     email: profile.email,
+    phone: profile.phone,
+    website: profile.website,
     github: profile.github,
     linkedin: profile.linkedin,
     cvPath: profile.cvPath,
@@ -198,6 +276,10 @@ const json = JSON.stringify(payload).replace(/</g, '\\u003c');
   </div>
 
   <div class="boot" data-boot hidden aria-live="polite"></div>
+</div>
+
+<div data-skill-template hidden>
+  <SkillInventory locale={locale} stack={stack} projects={projects} experience={experience} />
 </div>
 
 <script type="application/json" data-payload set:html={json}></script>

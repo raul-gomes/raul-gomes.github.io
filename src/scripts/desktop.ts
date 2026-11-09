@@ -1,6 +1,7 @@
 import { WindowManager, type OpenWindowInfo } from './window-manager';
-import { runCommand, type TerminalContext } from '../lib/terminal';
+import { runCommand, type TerminalContext, type TerminalNode } from '../lib/terminal';
 import { setMode } from './mode-controller';
+import { mountSkillInventory } from './skill-inventory';
 import { pathForLocale } from '../lib/i18n';
 import { iconSvg } from '../lib/icons';
 import type { Mode } from '../lib/mode';
@@ -28,15 +29,20 @@ export interface DesktopDetail {
   period?: string;
 }
 
-export type NodeKind = 'folder' | 'document' | 'link' | 'terminal';
+export type NodeKind = 'folder' | 'document' | 'link' | 'terminal' | 'image' | 'skills';
 
 export interface DesktopNode {
   id: string;
   label: string;
   icon: string;
+  iconSrc?: string;
+  fileName?: string;
   kind: NodeKind;
   href?: string;
   external?: boolean;
+  src?: string;
+  caption?: string;
+  galleryIds?: string[];
   intro?: string;
   children?: DesktopNode[];
   detail?: DesktopDetail;
@@ -58,6 +64,8 @@ export interface DesktopPayload {
       awards: string;
       certifications: string;
       location: string;
+      previousImage: string;
+      nextImage: string;
       statusLabels: { live: string; wip: string; placeholder: string };
     };
     terminal: TerminalContext & { inputLabel: string; promptLabel: string };
@@ -68,6 +76,8 @@ export interface DesktopPayload {
     role: string;
     location: string;
     email: string;
+    phone: string;
+    website: string;
     github: string;
     linkedin: string;
     cvPath: string;
@@ -122,8 +132,41 @@ export function bootDesktop(root: HTMLElement, payload: DesktopPayload): void {
       });
       return;
     }
+    if (node.kind === 'image' && node.src) {
+      const images = (node.galleryIds ?? [node.id])
+        .map((id) => index.get(id))
+        .filter((item): item is DesktopNode => !!item && item.kind === 'image' && !!item.src);
+      const current = Math.max(0, images.findIndex((item) => item.id === node.id));
+      const winId = `image-${node.id}`;
+      wm.open({
+        id: winId,
+        title: node.label,
+        content: renderImage(node, images, current, payload),
+        width: 40,
+        height: 30,
+        onOpen: (el) => wireImageViewer(el, winId, images, current),
+      });
+      return;
+    }
     if (node.kind === 'terminal') {
       openTerminal();
+      return;
+    }
+    if (node.kind === 'skills') {
+      const template = document.querySelector<HTMLElement>('[data-skill-template] [data-skill-inventory]');
+      if (!template) return;
+      const clone = template.cloneNode(true) as HTMLElement;
+      wm.open({
+        id: `app-${node.id}`,
+        title: node.label,
+        content: clone.outerHTML,
+        width: 58,
+        height: 38,
+        onOpen: (el) => {
+          const inventory = el.querySelector<HTMLElement>('[data-skill-inventory]');
+          if (inventory) mountSkillInventory(inventory);
+        },
+      });
       return;
     }
     if (node.kind === 'link' && node.href) {
@@ -135,6 +178,40 @@ export function bootDesktop(root: HTMLElement, payload: DesktopPayload): void {
   function openNodeById(id: string): void {
     const node = index.get(id);
     if (node) openNode(node);
+  }
+
+  function wireImageViewer(win: HTMLElement, winId: string, images: DesktopNode[], startIndex: number): void {
+    if (images.length < 2) return;
+    let current = startIndex;
+    const img = win.querySelector<HTMLImageElement>('.image-view img');
+    const caption = win.querySelector<HTMLElement>('[data-image-caption]');
+    const counter = win.querySelector<HTMLElement>('[data-image-count]');
+    if (!img) return;
+
+    const show = (index: number): void => {
+      current = (index + images.length) % images.length;
+      const item = images[current];
+      img.src = item.src ?? '';
+      img.alt = item.caption ?? item.label;
+      if (caption) caption.textContent = item.caption ?? '';
+      if (counter) counter.textContent = `${current + 1} / ${images.length}`;
+      wm.setTitle(winId, item.label);
+    };
+
+    win.querySelector('[data-image-prev]')?.addEventListener('click', () => show(current - 1));
+    win.querySelector('[data-image-next]')?.addEventListener('click', () => show(current + 1));
+    win.tabIndex = -1;
+    win.addEventListener('pointerdown', () => win.focus({ preventScroll: true }));
+    win.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        show(current - 1);
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        show(current + 1);
+      }
+    });
+    win.focus({ preventScroll: true });
   }
 
   function wireFolder(win: HTMLElement): void {
@@ -201,7 +278,7 @@ export function bootDesktop(root: HTMLElement, payload: DesktopPayload): void {
       btn.className = 'desk-icon';
       btn.dataset.node = node.id;
       btn.dataset.selected = 'false';
-      btn.innerHTML = `<span class="desk-icon__img">${iconSvg(node.icon, 44)}</span><span class="desk-icon__label">${escapeHtml(node.label)}</span>`;
+      btn.innerHTML = `<span class="desk-icon__img">${nodeIcon(node, 44)}</span><span class="desk-icon__label">${escapeHtml(node.label)}</span>`;
 
       const col = Math.floor(i / perCol);
       const row = i % perCol;
@@ -243,16 +320,47 @@ export function bootDesktop(root: HTMLElement, payload: DesktopPayload): void {
     const out = win.querySelector<HTMLElement>('[data-term-out]');
     const form = win.querySelector<HTMLFormElement>('[data-term-form]');
     const input = win.querySelector<HTMLInputElement>('[data-term-input]');
+    const prompt = win.querySelector<HTMLElement>('[data-term-prompt]');
     if (!out || !form || !input) return;
 
+    const fs = buildTerminalFs(payload);
+    const history: string[] = [];
+    let historyIndex = 0;
+    let cwd = '/';
+
+    const promptFor = (path: string): string =>
+      payload.ui.terminal.promptLabel.replace('{cwd}', path === '/' ? '~' : `~${path}`);
+
     print(out, [`${payload.profile.handle} — ${payload.profile.role}`, payload.ui.terminal.helpTitle], 'term__line--dim');
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        historyIndex = Math.max(0, historyIndex - 1);
+        input.value = history[historyIndex] ?? '';
+        input.setSelectionRange(input.value.length, input.value.length);
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        historyIndex = Math.min(history.length, historyIndex + 1);
+        input.value = history[historyIndex] ?? '';
+        input.setSelectionRange(input.value.length, input.value.length);
+      }
+    });
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const raw = input.value;
       input.value = '';
-      echo(out, `${payload.ui.terminal.promptLabel} ${raw}`);
-      const result = runCommand(raw, payload.ui.terminal);
+      if (raw.trim()) {
+        history.push(raw);
+        historyIndex = history.length;
+      }
+      echo(out, `${promptFor(cwd)} ${raw}`);
+      const result = runCommand(raw, payload.ui.terminal, fs, cwd);
+      if (result.cwd !== undefined) {
+        cwd = result.cwd;
+        if (prompt) prompt.textContent = promptFor(cwd);
+      }
       if (result.clear) {
         out.innerHTML = '';
         return;
@@ -287,19 +395,45 @@ export function bootDesktop(root: HTMLElement, payload: DesktopPayload): void {
   powerBtn?.focus();
 }
 
+function nodeIcon(node: DesktopNode, size: number): string {
+  if (node.iconSrc) {
+    return `<img src="${escapeHtml(node.iconSrc)}" alt="" width="${size}" height="${size}" loading="lazy" />`;
+  }
+  return iconSvg(node.icon, size);
+}
+
 function renderFolder(node: DesktopNode, payload: DesktopPayload): string {
   const intro = node.intro ? `<div class="folder__intro">${node.intro}</div>` : '';
   const rows = (node.children ?? [])
     .map(
       (child) => `
       <li class="fm__item" data-node="${child.id}" data-selected="false" tabindex="0">
-        <span class="fm__icon">${iconSvg(child.icon, 40)}</span>
+        <span class="fm__icon">${nodeIcon(child, 40)}</span>
         <span class="fm__name">${escapeHtml(child.label)}</span>
       </li>`,
     )
     .join('');
   const hint = `<p class="fm__hint">${escapeHtml(payload.ui.desktop.selectHint)}</p>`;
   return `<p class="fm__head">// ${escapeHtml(node.label)} — ${escapeHtml(payload.ui.desktop.fileManager)}</p>${intro}<ul class="fm">${rows}</ul>${hint}`;
+}
+
+function renderImage(node: DesktopNode, images: DesktopNode[], current: number, payload: DesktopPayload): string {
+  const caption = `<figcaption data-image-caption>${escapeHtml(node.caption ?? '')}</figcaption>`;
+  const nav =
+    images.length > 1
+      ? `<div class="image-view__nav">
+          <button type="button" class="image-view__arrow" data-image-prev aria-label="${escapeHtml(
+            payload.ui.desktop.previousImage,
+          )}">←</button>
+          <span class="image-view__count" data-image-count>${current + 1} / ${images.length}</span>
+          <button type="button" class="image-view__arrow" data-image-next aria-label="${escapeHtml(
+            payload.ui.desktop.nextImage,
+          )}">→</button>
+        </div>`
+      : '';
+  return `<figure class="image-view" data-image-viewer><img src="${escapeHtml(
+    node.src ?? '',
+  )}" alt="${escapeHtml(node.caption ?? node.label)}" loading="lazy" />${caption}${nav}</figure>`;
 }
 
 function renderDetail(node: DesktopNode, payload: DesktopPayload): string {
@@ -339,12 +473,75 @@ function renderDetail(node: DesktopNode, payload: DesktopPayload): string {
     <div class="detail__footer">${status} ${links}</div>`;
 }
 
+function buildTerminalFs(payload: DesktopPayload): TerminalNode {
+  const toNode = (node: DesktopNode): TerminalNode => {
+    if (node.kind === 'folder') {
+      return { name: node.id, kind: 'dir', nodeId: node.id, children: (node.children ?? []).map(toNode) };
+    }
+    if (node.kind === 'document') {
+      return {
+        name: node.fileName ?? `${node.id}.txt`,
+        kind: 'file',
+        nodeId: node.id,
+        content: node.detail ? detailToText(node.detail, payload) : node.label,
+      };
+    }
+    if (node.kind === 'link') {
+      return {
+        name: node.fileName ?? (node.id === 'curriculo' ? 'curriculo.pdf' : `${node.id}.url`),
+        kind: 'file',
+        nodeId: node.id,
+        content: node.href ?? '',
+      };
+    }
+    if (node.kind === 'image') {
+      return {
+        name: node.fileName ?? node.label,
+        kind: 'file',
+        nodeId: node.id,
+        content: `[imagem] ${node.caption ?? node.label}\n${node.src ?? ''}`,
+      };
+    }
+    return { name: node.fileName ?? node.id, kind: 'file', nodeId: node.id, content: node.label };
+  };
+
+  return { name: '/', kind: 'dir', children: payload.nodes.map(toNode) };
+}
+
+function detailToText(detail: DesktopDetail, payload: DesktopPayload): string {
+  const lines: string[] = [detail.title];
+  if (detail.tagline) lines.push(detail.tagline);
+  const meta = [detail.company, detail.period].filter(Boolean).join(' · ');
+  if (meta) lines.push(meta);
+  if (detail.status) lines.push(`status: ${payload.ui.desktop.statusLabels[detail.status]}`);
+  if (detail.tags.length > 0) lines.push(`stack: ${detail.tags.join(', ')}`);
+  if (detail.links.length > 0) {
+    lines.push(`links: ${detail.links.map((link) => `${link.label} <${link.href}>`).join(', ')}`);
+  }
+  const body = htmlToText(detail.bodyHtml);
+  if (body) lines.push('', body);
+  return lines.join('\n');
+}
+
+function htmlToText(html: string): string {
+  if (!html) return '';
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  doc.querySelectorAll('li').forEach((item) => {
+    item.textContent = `- ${item.textContent ?? ''}`;
+  });
+  doc.querySelectorAll('p, li, h1, h2, h3, h4, h5, h6, br').forEach((element) => {
+    element.append('\n');
+  });
+  return (doc.body.textContent ?? '').replace(/\n{3,}/g, '\n\n').trim();
+}
+
 function renderTerminal(payload: DesktopPayload): string {
+  const prompt = payload.ui.terminal.promptLabel.replace('{cwd}', '~');
   return `
     <div class="term" data-term>
       <div class="term__out" data-term-out></div>
       <form class="term__form" data-term-form>
-        <label class="term__prompt" for="term-input">${escapeHtml(payload.ui.terminal.promptLabel)}</label>
+        <label class="term__prompt" for="term-input" data-term-prompt>${escapeHtml(prompt)}</label>
         <input id="term-input" class="term__input" data-term-input autocomplete="off" spellcheck="false"
           aria-label="${escapeHtml(payload.ui.terminal.inputLabel)}" />
       </form>

@@ -47,6 +47,16 @@ export class WindowManager {
     return this.wins.has(id);
   }
 
+  setTitle(id: string, title: string): void {
+    const win = this.wins.get(id);
+    if (!win) return;
+    win.title = title;
+    win.el.setAttribute('aria-label', title);
+    const titleEl = win.el.querySelector<HTMLElement>('.app-window__title');
+    if (titleEl) titleEl.textContent = title;
+    this.emit();
+  }
+
   open(options: OpenWindowOptions): void {
     const existing = this.wins.get(options.id);
     if (existing) {

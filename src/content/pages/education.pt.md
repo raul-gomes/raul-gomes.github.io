@@ -6,4 +6,4 @@ icon: book
 order: 3
 ---
 
-Formação acadêmica, certificações e prêmios conquistados ao longo da carreira.
+Formação acadêmica, certificações, prêmios e idiomas.

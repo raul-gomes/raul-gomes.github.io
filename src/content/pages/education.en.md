@@ -6,4 +6,4 @@ icon: book
 order: 3
 ---
 
-Academic background, certifications and awards earned throughout my career.
+Academic background, certifications, awards and languages.

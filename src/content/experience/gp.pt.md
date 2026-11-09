@@ -7,4 +7,9 @@ icon: delorean
 order: 4
 ---
 
-APIs em **.NET** e linguagens tipadas; workflows low-code com Bizagi Studio; testes unitários e integração contínua.
+Desenvolvimento e integração de APIs em .NET, com workflows low-code e atuação em equipe Agile.
+
+## Atividades
+
+- Criação e integração de APIs com .NET e desenvolvimento low-code com Bizagi Studio (C#)
+- CI/CD, containerização, testes e validação de funcionalidades em equipe Agile

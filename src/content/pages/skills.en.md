@@ -6,4 +6,4 @@ icon: pokeball
 order: 2
 ---
 
-Technical capabilities by area. Open the items to see the technologies I use day to day.
+Technical capabilities by area. Open `inventory.exe` for the interactive inventory or the groups for details.

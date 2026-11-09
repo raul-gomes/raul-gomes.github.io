@@ -6,4 +6,4 @@ icon: magnifier
 order: 4
 ---
 
-Aberto a conversas sobre backend, arquitetura e cloud. Me encontre pelos canais abaixo.
+Aberto a oportunidades remotas ou híbridas em Brasília. Me encontre pelos canais abaixo.

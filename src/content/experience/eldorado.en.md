@@ -7,4 +7,13 @@ icon: cyborg
 order: 3
 ---
 
-**Python** APIs (Flask), Oracle schemas with stored procedures, observability pipelines (OpenTelemetry + Grafana), microservices and mentoring juniors.
+Python solutions for data modeling, integration and validation, with work across observability, analytics and mentoring.
+
+## Responsibilities
+
+- Python (Flask) solutions for data modeling, integration and validation
+- Oracle DB with stored procedures and query optimization
+- Observability PoCs with API Gateway, OpenTelemetry and Grafana, including real-time data monitoring
+- Analytics solutions and machine learning algorithms with R
+- Reusable JavaScript libraries for system integration and Angular analytics dashboards
+- CI/CD with Docker and GitLab for pipelines and microservices

@@ -1,25 +1,25 @@
 ---
 lang: pt
 title: Placo
-tagline: Sistema de gestão financeira
+tagline: Gestão financeira para PF e PJ
 status: live
-stack: [FastAPI, React, PostgreSQL, Docker Compose, OpenAPI]
+stack: [FastAPI, PostgreSQL, React, TypeScript, Docker Compose, CI/CD]
 icon: tetris
 order: 2
 links:
   - { label: código, href: 'https://github.com/raul-gomes' }
 cover: /placeholder/placo/0.svg
 gallery:
-  - { src: /placeholder/placo/1.svg, caption: Limite de gastos }
-  - { src: /placeholder/placo/2.svg, caption: Categorização }
-  - { src: /placeholder/placo/3.svg, caption: Alertas }
+  - { src: /placeholder/placo/1.svg, caption: Orçamento PF e PJ }
+  - { src: /placeholder/placo/2.svg, caption: Categorias e subcategorias }
+  - { src: /placeholder/placo/3.svg, caption: Metas e limites }
 ---
 
-Sistema de gestão financeira pessoal com limite de gastos, categorização e alertas.
+Cofundador e desenvolvedor de uma plataforma de gestão financeira para profissionais que têm CPF e CNPJ. A visualização de orçamentos pessoais (PF) e empresariais (PJ) é separada por categorias e subcategorias, com metas de curto e médio prazo e limites de gasto por categoria.
 
-## Arquitetura
+## Destaques
 
-- Backend RESTful com autenticação e validação
-- Modelagem normalizada em PostgreSQL
-- Frontend reativo com estado centralizado
-- Documentação de API via OpenAPI
+- APIs RESTful em FastAPI e modelagem em PostgreSQL otimizada para consultas por categoria e período (diário, mensal, anual)
+- Dashboard em React com gráficos de fontes de renda e gastos versus limites
+- Containerização com Docker Compose e CI/CD
+- Definição de produto e posicionamento de marca

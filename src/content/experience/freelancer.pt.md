@@ -1,10 +1,18 @@
 ---
 lang: pt
-title: Desenvolvedor Full Stack
-company: Freelancer
-period: Mar/2024 – Mai/2025
+title: Desenvolvedor Full Stack Freelancer
+company: Projetos diversos
+period: Mar/2024 – Presente
 icon: bat
-order: 2
+order: 1
 ---
 
-APIs em **Python** com arquitetura limpa e **SOLID**; frontends em **Angular**; integrações via APIs, automação de workflows (Make, N8N) e deploy em cloud.
+Desenvolvimento de APIs REST e aplicações full stack para clientes de diferentes setores, do levantamento de requisitos ao deploy.
+
+## Atividades
+
+- APIs REST com Python (Django, FastAPI, Flask) e frontends em Angular e React
+- Automação de workflows e pipelines de dados com Make e n8n
+- Integração de APIs para coleta, transformação e ingestão de dados
+- Docker e CI/CD em múltiplos projetos
+- Levantamento de requisitos diretamente com clientes

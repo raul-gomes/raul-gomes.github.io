@@ -7,6 +7,8 @@ export interface Profile {
   role: Localized<string>;
   location: Localized<string>;
   email: string;
+  phone: string;
+  website: string;
   github: string;
   linkedin: string;
   cvPath: string;
@@ -17,7 +19,7 @@ export interface Profile {
 export interface StackGroup {
   id: string;
   label: Localized<string>;
-  items: string[];
+  items: Localized<string[]>;
 }
 
 export interface Award {

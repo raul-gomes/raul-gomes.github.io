@@ -6,4 +6,4 @@ icon: magnifier
 order: 4
 ---
 
-Open to conversations about backend, architecture and cloud. Reach me through the channels below.
+Open to remote or hybrid opportunities in Brasília. Reach me through the channels below.

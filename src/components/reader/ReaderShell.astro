@@ -2,12 +2,14 @@
 import { profile } from '@data/profile';
 import { stack } from '@data/stack';
 import { awards, certifications } from '@data/certs';
+import { education, languages } from '@data/education';
 import { ui } from '@data/i18n';
 import type { Locale } from '@data/types';
 import { getPage, getProjects, getExperience } from '@lib/content';
 import ModeToggle from '@components/shared/ModeToggle.astro';
 import LangToggle from '@components/shared/LangToggle.astro';
 import ProjectBody from '@components/shared/ProjectBody.astro';
+import SkillInventory from '@components/reader/SkillInventory.astro';
 
 interface Props {
   locale: Locale;
@@ -17,6 +19,8 @@ const { locale } = Astro.props;
 const t = ui[locale];
 const s = t.sections;
 const pad = (n: number) => String(n).padStart(2, '0');
+const telHref = `tel:+55${profile.phone.replace(/\D/g, '')}`;
+const skillCount = stack.reduce((total, group) => total + group.items[locale].length, 0);
 
 const [aboutPage, projects, experience] = await Promise.all([
   getPage('about', locale),
@@ -54,7 +58,7 @@ const nav = [
     <section class="hero">
       <h1 class="hero__name flicker">{profile.name.toUpperCase()}</h1>
       <p class="hero__role">{profile.role[locale]}</p>
-      <p class="hero__meta">{profile.location[locale]} &middot; {profile.email}</p>
+      <p class="hero__meta">{profile.location[locale]} &middot; {profile.email} &middot; {profile.phone}</p>
     </section>
 
     <section class="section" id="sobre">
@@ -70,7 +74,7 @@ const nav = [
     <section class="section" id="projetos">
       <h2 class="section__head">
         <span class="section__prompt">&gt;</span> {s.projects}
-        <span class="section__count">{pad(projects.length)} arquivos</span>
+        <span class="section__count">{pad(projects.length)} {locale === 'pt' ? 'arquivos' : 'files'}</span>
       </h2>
       <div class="project-list">
         {projects.map((project) => (
@@ -90,16 +94,9 @@ const nav = [
     <section class="section" id="stack">
       <h2 class="section__head">
         <span class="section__prompt">&gt;</span> {s.stack}
-        <span class="section__count">{pad(stack.length)} grupos</span>
+        <span class="section__count">{pad(skillCount)} {locale === 'pt' ? 'itens' : 'items'}</span>
       </h2>
-      <div class="stack-grid">
-        {stack.map((group) => (
-          <div class="stack-group">
-            <h3>{group.label[locale]}</h3>
-            <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
-          </div>
-        ))}
-      </div>
+      <SkillInventory locale={locale} stack={stack} projects={projects} experience={experience} />
     </section>
 
     <section class="section" id="experiencia">
@@ -124,13 +121,29 @@ const nav = [
       <h2 class="section__head">
         <span class="section__prompt">&gt;</span> {s.certs}
       </h2>
-      {awards.map((a) => <div class="award">&#9733; {a.title[locale]} &mdash; {a.issuer} {a.year}</div>)}
+      <h3 class="records__head">{locale === 'pt' ? 'formação' : 'education'}</h3>
+      <ul class="records">
+        {education.map((item) => (
+          <li>
+            <span class="records__year">{item.period}</span>
+            <span>{item.course[locale]} &mdash; <span style="color:var(--amber-dim)">{item.institution[locale]}</span></span>
+          </li>
+        ))}
+      </ul>
+      <h3 class="records__head">{locale === 'pt' ? 'certificações' : 'certifications'}</h3>
       <ul class="records">
         {certifications.map((c) => (
           <li>
             <span class="records__year">{c.year}</span>
             <span>{c.name} &mdash; <span style="color:var(--amber-dim)">{c.issuer}</span></span>
           </li>
+        ))}
+      </ul>
+      {awards.map((a) => <div class="award">&#9733; {a.title[locale]} &mdash; {a.issuer} {a.year}</div>)}
+      <h3 class="records__head">{locale === 'pt' ? 'idiomas' : 'languages'}</h3>
+      <ul class="records">
+        {languages.map((item) => (
+          <li><span>{item[locale]}</span></li>
         ))}
       </ul>
     </section>
@@ -143,6 +156,14 @@ const nav = [
         <div class="contact__row">
           <span class="contact__key">email</span>
           <a href={`mailto:${profile.email}`}>{profile.email}</a>
+        </div>
+        <div class="contact__row">
+          <span class="contact__key">{locale === 'pt' ? 'telefone' : 'phone'}</span>
+          <a href={telHref}>{profile.phone}</a>
+        </div>
+        <div class="contact__row">
+          <span class="contact__key">{locale === 'pt' ? 'site' : 'website'}</span>
+          <a href={profile.website} target="_blank" rel="noopener noreferrer">{profile.website.replace('https://', '').replace(/\/$/, '')}</a>
         </div>
         <div class="contact__row">
           <span class="contact__key">github</span>
@@ -166,3 +187,11 @@ const nav = [
     <span>nostromo terminal // v1.0</span>
   </footer>
 </div>
+
+<script>
+  import { mountSkillInventory } from '@scripts/skill-inventory';
+
+  document
+    .querySelectorAll<HTMLElement>('[data-shell="reader"] [data-skill-inventory]')
+    .forEach((root) => mountSkillInventory(root));
+</script>

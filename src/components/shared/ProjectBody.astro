@@ -20,6 +20,19 @@ const status = view.status ? t.desktop.statusLabels[view.status] : '';
 
 <div class="project__readme" set:html={view.bodyHtml} />
 
+{view.gallery.length > 0 && (
+  <ul class="project__gallery" aria-label={`${view.title} — ${locale === 'pt' ? 'galeria' : 'gallery'}`}>
+    {view.gallery.map((image) => (
+      <li>
+        <figure>
+          <img src={image.src} alt={image.caption ?? `${view.title} — screenshot`} loading="lazy" />
+          {image.caption && <figcaption>{image.caption}</figcaption>}
+        </figure>
+      </li>
+    ))}
+  </ul>
+)}
+
 {view.tags.length > 0 && (
   <ul class="tags" aria-label="stack">
     {view.tags.map((item) => <li>{item}</li>)}

@@ -7,4 +7,9 @@ icon: delorean
 order: 4
 ---
 
-**.NET** APIs and typed languages; low-code workflows with Bizagi Studio; unit tests and continuous integration.
+.NET API development and integration, with low-code workflows and Agile teamwork.
+
+## Responsibilities
+
+- .NET API creation and integration, plus low-code development with Bizagi Studio (C#)
+- CI/CD, containerization, testing and feature validation in an Agile team

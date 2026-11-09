@@ -40,7 +40,28 @@ export interface UIStrings {
     awards: string;
     certifications: string;
     location: string;
+    phone: string;
+    website: string;
+    educationList: string;
+    languages: string;
+    previousImage: string;
+    nextImage: string;
     statusLabels: { live: string; wip: string; placeholder: string };
+  };
+  inventory: {
+    hint: string;
+    search: string;
+    all: string;
+    random: string;
+    filters: string;
+    selectPrompt: string;
+    noResults: string;
+    category: string;
+    related: string;
+    projects: string;
+    experience: string;
+    close: string;
+    items: string;
   };
   apps: AppLabels;
   terminal: {
@@ -53,6 +74,10 @@ export interface UIStrings {
     opened: string;
     cleared: string;
     langChanged: string;
+    notFound: string;
+    notADirectory: string;
+    isADirectory: string;
+    missingOperand: string;
   };
 }
 
@@ -64,7 +89,7 @@ export const ui: Record<Locale, UIStrings> = {
       projects: 'projetos',
       stack: 'stack',
       experience: 'experiência',
-      certs: 'certificações & prêmios',
+      certs: 'formação & certificações',
       contact: 'contato',
     },
     actions: {
@@ -92,11 +117,32 @@ export const ui: Record<Locale, UIStrings> = {
       awards: 'prêmios.txt',
       certifications: 'certificações.txt',
       location: 'local',
+      phone: 'telefone',
+      website: 'site',
+      educationList: 'formação.txt',
+      languages: 'idiomas.txt',
+      previousImage: 'imagem anterior',
+      nextImage: 'próxima imagem',
       statusLabels: {
         live: 'no ar',
         wip: 'em construção',
         placeholder: 'placeholder',
       },
+    },
+    inventory: {
+      hint: 'Clique em uma skill para inspecionar. Use a busca, os filtros ou o botão de sortear.',
+      search: 'buscar skill...',
+      all: 'todas',
+      random: 'sortear',
+      filters: 'filtrar por categoria',
+      selectPrompt: 'Selecione uma skill para ver detalhes, projetos e experiências relacionadas.',
+      noResults: 'Nenhuma skill encontrada.',
+      category: 'categoria',
+      related: 'skills relacionadas',
+      projects: 'projetos relacionados',
+      experience: 'experiências relacionadas',
+      close: 'fechar',
+      items: 'itens',
     },
     apps: {
       about: 'sobre.txt',
@@ -109,27 +155,34 @@ export const ui: Record<Locale, UIStrings> = {
       cv: 'curriculo.pdf',
     },
     terminal: {
-      promptLabel: 'raul@nostromo:~$',
+      promptLabel: 'raul@nostromo:{cwd}$',
       inputLabel: 'Comando do terminal',
       helpTitle: 'comandos disponíveis:',
       commands: [
         { cmd: 'help', desc: 'lista os comandos' },
+        { cmd: 'ls [dir]', desc: 'lista arquivos e diretórios' },
+        { cmd: 'cd <dir>', desc: 'entra em um diretório (use .. para voltar)' },
+        { cmd: 'cat <arquivo>', desc: 'mostra o conteúdo de um arquivo' },
+        { cmd: 'pwd', desc: 'mostra o diretório atual' },
+        { cmd: 'open <app>', desc: 'abre uma janela pelo caminho ou app' },
         { cmd: 'whoami', desc: 'perfil resumido' },
-        { cmd: 'ls', desc: 'lista os apps disponíveis' },
-        { cmd: 'open <app>', desc: 'abre uma janela (sobre, projetos, experiencia, formacao, skills, contato)' },
         { cmd: 'lang pt | en', desc: 'troca o idioma' },
         { cmd: 'mode reader', desc: 'volta para o modo leitura' },
         { cmd: 'clear', desc: 'limpa a tela' },
       ],
       unknown: 'comando desconhecido:',
       whoami: [
-        'raul@nostromo — Engenheiro de Software',
-        '3+ anos · backend Python · arquitetura · cloud',
-        'Azure AI Engineer · 3º lugar Innovation Challenge Microsoft 2025',
+        'raul@nostromo — Engenheiro de Software Pleno',
+        'Em TI desde 2006 · dev desde 2022 · Python, TypeScript, Node.js',
+        'Azure AI Engineer · Databricks Foundations · 3º lugar Innovation Challenge Microsoft 2025',
       ],
       opened: 'abrindo',
       cleared: 'tela limpa',
       langChanged: 'idioma alterado',
+      notFound: 'arquivo ou diretório não encontrado',
+      notADirectory: 'não é um diretório',
+      isADirectory: 'é um diretório',
+      missingOperand: 'faltando operando',
     },
   },
   en: {
@@ -139,7 +192,7 @@ export const ui: Record<Locale, UIStrings> = {
       projects: 'projects',
       stack: 'stack',
       experience: 'experience',
-      certs: 'certifications & awards',
+      certs: 'education & certifications',
       contact: 'contact',
     },
     actions: {
@@ -167,11 +220,32 @@ export const ui: Record<Locale, UIStrings> = {
       awards: 'awards.txt',
       certifications: 'certifications.txt',
       location: 'location',
+      phone: 'phone',
+      website: 'website',
+      educationList: 'education.txt',
+      languages: 'languages.txt',
+      previousImage: 'previous image',
+      nextImage: 'next image',
       statusLabels: {
         live: 'live',
         wip: 'work in progress',
         placeholder: 'placeholder',
       },
+    },
+    inventory: {
+      hint: 'Click a skill to inspect it. Use search, filters, or the random button.',
+      search: 'search skills...',
+      all: 'all',
+      random: 'random',
+      filters: 'filter by category',
+      selectPrompt: 'Select a skill to see details, related projects, and experience.',
+      noResults: 'No skills found.',
+      category: 'category',
+      related: 'related skills',
+      projects: 'related projects',
+      experience: 'related experience',
+      close: 'close',
+      items: 'items',
     },
     apps: {
       about: 'about.txt',
@@ -184,27 +258,34 @@ export const ui: Record<Locale, UIStrings> = {
       cv: 'resume.pdf',
     },
     terminal: {
-      promptLabel: 'raul@nostromo:~$',
+      promptLabel: 'raul@nostromo:{cwd}$',
       inputLabel: 'Terminal command',
       helpTitle: 'available commands:',
       commands: [
         { cmd: 'help', desc: 'list the commands' },
+        { cmd: 'ls [dir]', desc: 'list files and directories' },
+        { cmd: 'cd <dir>', desc: 'change directory (use .. to go back)' },
+        { cmd: 'cat <file>', desc: 'print a file to the terminal' },
+        { cmd: 'pwd', desc: 'print the current directory' },
+        { cmd: 'open <app>', desc: 'open a window by path or app name' },
         { cmd: 'whoami', desc: 'short profile' },
-        { cmd: 'ls', desc: 'list available apps' },
-        { cmd: 'open <app>', desc: 'open a window (sobre, projetos, experiencia, formacao, skills, contato)' },
         { cmd: 'lang pt | en', desc: 'switch language' },
         { cmd: 'mode reader', desc: 'return to reader mode' },
         { cmd: 'clear', desc: 'clear the screen' },
       ],
       unknown: 'unknown command:',
       whoami: [
-        'raul@nostromo — Software Engineer',
-        '3+ years · Python backend · architecture · cloud',
-        'Azure AI Engineer · 3rd place Microsoft Innovation Challenge 2025',
+        'raul@nostromo — Mid-level Software Engineer',
+        'In IT since 2006 · building software since 2022 · Python, TypeScript, Node.js',
+        'Azure AI Engineer · Databricks Foundations · 3rd place Microsoft Innovation Challenge 2025',
       ],
       opened: 'opening',
       cleared: 'screen cleared',
       langChanged: 'language changed',
+      notFound: 'no such file or directory',
+      notADirectory: 'not a directory',
+      isADirectory: 'is a directory',
+      missingOperand: 'missing operand',
     },
   },
 };

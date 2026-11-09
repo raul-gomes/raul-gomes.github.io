@@ -1,0 +1,205 @@
+---
+import type { Locale, StackGroup } from '@data/types';
+import { ui } from '@data/i18n';
+import { skillContext } from '@data/skill-context';
+import type { SectionView } from '@lib/content';
+import '@styles/skills.css';
+
+interface Props {
+  locale: Locale;
+  stack: StackGroup[];
+  projects: SectionView[];
+  experience: SectionView[];
+}
+
+const { locale, stack, projects, experience } = Astro.props;
+const t = ui[locale].inventory;
+
+const fallbackIconSrc =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffb000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 8l-4 4 4 4M16 8l4 4-4 4M13 5l-2 14'/%3E%3C/svg%3E";
+
+const simpleIcon = (slug: string, color?: string): string =>
+  color ? `https://cdn.simpleicons.org/${slug}/${color}` : `https://cdn.simpleicons.org/${slug}`;
+
+const techIconMap: Record<string, string> = {
+  'languages-0': simpleIcon('python'),
+  'languages-1': simpleIcon('typescript'),
+  'languages-2': simpleIcon('javascript'),
+  'languages-3': simpleIcon('sqlite'),
+  'languages-4': simpleIcon('r'),
+  'backend-0': simpleIcon('fastapi'),
+  'backend-1': simpleIcon('django'),
+  'backend-2': simpleIcon('flask', 'ffffff'),
+  'backend-3': simpleIcon('nodedotjs'),
+  'backend-4': simpleIcon('swagger'),
+  'backend-5': simpleIcon('pydantic'),
+  'backend-6': simpleIcon('sqlalchemy'),
+  'backend-7': fallbackIconSrc,
+  'backend-8': simpleIcon('auth0'),
+  'backend-9': simpleIcon('jsonwebtokens'),
+  'frontend-0': simpleIcon('react'),
+  'frontend-1': simpleIcon('angular'),
+  'frontend-2': simpleIcon('vite'),
+  'frontend-3': simpleIcon('reactquery'),
+  'frontend-4': simpleIcon('reacthookform'),
+  'frontend-5': simpleIcon('zod'),
+  'data-0': simpleIcon('postgresql'),
+  'data-1': simpleIcon('mongodb'),
+  'data-2': simpleIcon('oracle'),
+  'data-3': simpleIcon('sqlite'),
+  'data-4': simpleIcon('postgresql'),
+  'data-5': simpleIcon('postgresql'),
+  'pipelines-0': simpleIcon('apacheairflow'),
+  'pipelines-1': simpleIcon('databricks'),
+  'pipelines-2': simpleIcon('databricks'),
+  'pipelines-3': simpleIcon('databricks'),
+  'cloud-0': simpleIcon('microsoftazure'),
+  'cloud-1': simpleIcon('oracle'),
+  'cloud-2': simpleIcon('amazonwebservices'),
+  'cloud-3': simpleIcon('docker'),
+  'cloud-4': simpleIcon('nginx'),
+  'cloud-5': simpleIcon('githubactions'),
+  'cloud-6': simpleIcon('git'),
+  'quality-0': simpleIcon('pytest'),
+  'quality-1': simpleIcon('vitest'),
+  'quality-2': simpleIcon('testinglibrary'),
+  'quality-3': simpleIcon('grafana'),
+  'quality-4': simpleIcon('opentelemetry'),
+  'quality-5': simpleIcon('amazonapigateway'),
+  'ai-0': simpleIcon('githubcopilot', 'ffffff'),
+  'ai-1': simpleIcon('anthropic', 'ffffff'),
+  'ai-2': simpleIcon('openai'),
+  'ai-3': simpleIcon('n8n'),
+  'ai-4': simpleIcon('make'),
+  'methodologies-0': simpleIcon('jira'),
+  'methodologies-1': simpleIcon('jira'),
+  'methodologies-2': simpleIcon('confluence'),
+};
+
+const normalize = (value: string): string =>
+  value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '');
+
+const projectBySlug = new Map(projects.map((project) => [project.slug, project]));
+const experienceBySlug = new Map(experience.map((job) => [job.slug, job]));
+
+const groups = stack.map((group) => {
+  const items = group.items[locale].map((name, itemIndex) => ({
+    id: `${group.id}-${itemIndex}`,
+    name,
+    group: group.id,
+    groupLabel: group.label[locale],
+    iconSrc: techIconMap[`${group.id}-${itemIndex}`] ?? fallbackIconSrc,
+    search: normalize(name),
+  }));
+
+  return { id: group.id, label: group.label[locale], items };
+});
+
+const skills = groups.flatMap((group) => group.items);
+const total = skills.length;
+
+const context = Object.fromEntries(
+  groups.map((group) => {
+    const ctx = skillContext[group.id] ?? { projects: [], experience: [] };
+    return [
+      group.id,
+      {
+        label: group.label,
+        skills: group.items.map(({ id, name }) => ({ id, name })),
+        projects: ctx.projects
+          .map((slug) => projectBySlug.get(slug))
+          .filter((project): project is SectionView => Boolean(project))
+          .map((project) => ({ title: project.title, tagline: project.tagline })),
+        experience: ctx.experience
+          .map((slug) => experienceBySlug.get(slug))
+          .filter((job): job is SectionView => Boolean(job))
+          .map((job) => ({ title: job.title, company: job.company ?? '', period: job.period })),
+      },
+    ];
+  }),
+);
+
+const payload = {
+  skills: skills.map(({ id, name, group, groupLabel, iconSrc, search }) => ({
+    id,
+    name,
+    group,
+    groupLabel,
+    iconSrc,
+    search,
+  })),
+  groups: context,
+  labels: t,
+};
+const payloadJson = JSON.stringify(payload).replace(/</g, '\\u003c');
+---
+
+<div class="inventory" data-skill-inventory>
+  <p class="inventory__hint">{t.hint}</p>
+
+  <div class="inventory__toolbar">
+    <label class="inventory__search">
+      <span class="inventory__search-icon" aria-hidden="true">⌕</span>
+      <input
+        type="search"
+        data-skill-search
+        placeholder={t.search}
+        aria-label={t.search}
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </label>
+    <button type="button" class="inventory__random" data-skill-random>[ {t.random} ]</button>
+  </div>
+
+  <div class="inventory__filters" role="group" aria-label={t.filters}>
+    <button type="button" class="inventory__chip" data-skill-filter="all" aria-pressed="true">
+      {t.all} <span>{total}</span>
+    </button>
+    {groups.map((group) => (
+      <button type="button" class="inventory__chip" data-skill-filter={group.id} aria-pressed="false">
+        {group.label} <span>{group.items.length}</span>
+      </button>
+    ))}
+  </div>
+
+  <div class="inventory__meta">
+    <span data-skill-count>{total} {t.items}</span>
+  </div>
+
+  <div class="inventory__layout">
+    <div class="inventory__grid" data-skill-grid>
+      {skills.map((skill) => (
+        <button
+          type="button"
+          class="skill-card"
+          data-skill-card
+          data-skill-id={skill.id}
+          data-skill-group={skill.group}
+          data-skill-search={skill.search}
+          aria-pressed="false"
+        >
+          <span class="skill-card__icon" aria-hidden="true">
+            <img src={skill.iconSrc} alt="" loading="lazy" width="24" height="24" />
+          </span>
+          <span class="skill-card__name">{skill.name}</span>
+          <span class="skill-card__group">{skill.groupLabel}</span>
+        </button>
+      ))}
+    </div>
+
+    <aside class="inventory__panel" data-skill-panel aria-live="polite" data-selected="false">
+      <div class="inventory__panel-empty" data-skill-panel-empty>
+        <span class="inventory__panel-prompt" aria-hidden="true">&gt;_</span>
+        <p>{t.selectPrompt}</p>
+      </div>
+    </aside>
+  </div>
+
+  <p class="inventory__empty" data-skill-empty hidden>{t.noResults}</p>
+
+  <script type="application/json" data-skill-data set:html={payloadJson}></script>
+</div>

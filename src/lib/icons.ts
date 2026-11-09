@@ -26,6 +26,8 @@ export type IconId =
   | 'book'
   | 'folder'
   | 'document'
+  | 'image'
+  | 'link'
   | 'profile'
   | 'recycle';
 
@@ -263,6 +265,19 @@ export const icons: Record<IconId, string> = {
     <path d="M8 3h12l6 6v20H8z" fill="#e8d9b0" stroke="#8a6d00" stroke-width="1"/>
     <path d="M20 3v6h6" fill="#d8c48a" stroke="#8a6d00" stroke-width="1"/>
     <g stroke="#8a6d00" stroke-width="1.2"><path d="M11 15h10M11 19h10M11 23h6"/></g>
+  </svg>`,
+
+  image: `<svg ${SVG_ATTRS}>
+    <rect width="32" height="32" rx="4" fill="#0b0b12"/>
+    <rect x="4" y="6" width="24" height="20" fill="#0d1f14" stroke="#39ff88" stroke-width="1"/>
+    <circle cx="10" cy="12" r="2" fill="#ffd54a"/>
+    <path d="M5 24l7-8 5 5 4-4 6 7z" fill="#39ff88"/>
+  </svg>`,
+
+  link: `<svg ${SVG_ATTRS}>
+    <rect width="32" height="32" rx="4" fill="#0b0b12"/>
+    <path d="M13 19a4 4 0 0 1 0-6l4-4a4 4 0 0 1 6 6l-2 2" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linecap="round"/>
+    <path d="M19 13a4 4 0 0 1 0 6l-4 4a4 4 0 0 1-6-6l2-2" fill="none" stroke="#ffd54a" stroke-width="2" stroke-linecap="round"/>
   </svg>`,
 
   profile: `<svg ${SVG_ATTRS}>

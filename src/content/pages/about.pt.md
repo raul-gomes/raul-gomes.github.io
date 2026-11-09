@@ -6,10 +6,10 @@ icon: sauron
 order: 1
 ---
 
-Trabalho com backend, arquitetura de sistemas e full-stack. Meu terreno principal é **Python** — Django, FastAPI e Flask — passando por modelagem de bancos relacionais e não-relacionais, cloud computing e DevOps.
+Engenheiro de Software pleno full stack, em TI desde 2006 e desenvolvendo software desde 2022. Minha base é **Python** e banco de dados, mas já entreguei também em **TypeScript**, **Node.js**, **Angular** e **.NET**.
 
-Tenho background sólido em CI/CD, containerização, microserviços e observabilidade, e sou certificado **Azure AI Engineer**, com formação em Ciência de Dados.
+Levei o **Café com BPO** do levantamento de requisitos ao deploy, e ele está no ar; agora estou entregando o **Placo** e o **Síndico Indica**. Busco vaga remota ou híbrida em Brasília.
 
-Em 2025 conquistei o **3º lugar no Innovation Challenge da Microsoft** com um projeto de cloud computing, inteligência artificial e arquitetura escalável.
+Tenho experiência com APIs RESTful, modelagem de dados, pipelines ETL/ELT, **Databricks**, arquitetura medalhão, cloud (**Azure**, **OCI**, **AWS**), Docker, CI/CD e observabilidade. Também aplico IA e automação com GitHub Copilot, Claude, Whisper, n8n e Make.
 
 Gosto de código com fronteiras claras, testes de verdade e documentação que ajuda quem vem depois. Aprendo continuamente e ajo como dono da qualidade do que entrego.
