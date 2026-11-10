@@ -9,7 +9,7 @@ order: 3
 links:
   - { label: site, href: 'https://nacaopatina.vercel.app' }
   - { label: code, href: 'https://github.com/raul-gomes' }
-cover: /projects/nacao-patina/02-feed.webp
+cover: /projects/nacao-patina/00-logo.webp
 gallery:
   - { src: /projects/nacao-patina/02-feed.webp, caption: Feed with teacher notices and the month's calendar }
   - { src: /projects/nacao-patina/10-chat.webp, caption: Real-time floating chat opened from a profile }

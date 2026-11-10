@@ -9,7 +9,7 @@ order: 3
 links:
   - { label: site, href: 'https://nacaopatina.vercel.app' }
   - { label: código, href: 'https://github.com/raul-gomes' }
-cover: /projects/nacao-patina/02-feed.webp
+cover: /projects/nacao-patina/00-logo.webp
 gallery:
   - { src: /projects/nacao-patina/02-feed.webp, caption: Feed com avisos do professor e agenda do mês }
   - { src: /projects/nacao-patina/10-chat.webp, caption: Chat flutuante em tempo real aberto pelo perfil }
