@@ -17,7 +17,7 @@ gallery:
   - { src: /projects/nacao-patina/06-agenda.webp, caption: Agenda de aulas e rolês com confirmação de presença }
   - { src: /projects/nacao-patina/07-desapego.webp, caption: Nação Desapego, os classificados entre membros }
   - { src: /projects/nacao-patina/11-gerenciar.webp, caption: Professor concede e remove moderadores }
-  - { src: /projects/nacao-patina/12-mobile-feed.webp, caption: Versão mobile com navegação inferior }
+  - { src: /projects/nacao-patina/08-aulas.webp, caption: Videoaulas do YouTube organizadas em playlists pelo professor }
 ---
 
 Rede social gratuita de uma comunidade de patinação, feita para ensinar pessoas de todas as idades a andar de patins: feed com avisos do professor, comunidades, agenda de aulas e rolês, videoaulas, classificados entre membros, chat em tempo real e notificações.

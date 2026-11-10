@@ -17,7 +17,7 @@ gallery:
   - { src: /projects/nacao-patina/06-agenda.webp, caption: Lessons and rides calendar with RSVP }
   - { src: /projects/nacao-patina/07-desapego.webp, caption: Nação Desapego, the members' marketplace }
   - { src: /projects/nacao-patina/11-gerenciar.webp, caption: The teacher grants and revokes moderators }
-  - { src: /projects/nacao-patina/12-mobile-feed.webp, caption: Mobile layout with bottom navigation }
+  - { src: /projects/nacao-patina/08-aulas.webp, caption: YouTube video lessons organized into playlists by the teacher }
 ---
 
 A free social network for a skating community, built to teach people of all ages how to skate: a feed with teacher notices, communities, a lessons and rides calendar, video lessons, a members' marketplace, real-time chat and notifications.
