@@ -8,7 +8,7 @@ import type { Locale } from '@data/types';
 import { getPage, getProjects, getExperience } from '@lib/content';
 import ModeToggle from '@components/shared/ModeToggle.astro';
 import LangToggle from '@components/shared/LangToggle.astro';
-import ProjectBody from '@components/shared/ProjectBody.astro';
+import ProjectCard from '@components/reader/ProjectCard.astro';
 import SkillInventory from '@components/reader/SkillInventory.astro';
 
 interface Props {
@@ -84,7 +84,7 @@ const nav = [
               <span class="win__dots"><i></i><i></i><i></i></span>
             </div>
             <div class="win__body">
-              <ProjectBody view={project} locale={locale} />
+              <ProjectCard view={project} locale={locale} />
             </div>
           </article>
         ))}

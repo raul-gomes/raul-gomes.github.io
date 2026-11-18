@@ -287,6 +287,76 @@
   color: var(--amber-dim);
 }
 
+/* Compact project card (reader): cover, title and lead; the case study opens on demand. */
+.pcard {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  margin-bottom: var(--space-3);
+}
+
+.pcard__cover {
+  flex: none;
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  border: var(--border);
+  background: var(--bg-3);
+}
+
+.pcard__main {
+  min-width: 0;
+}
+
+.pcard__main .project__tagline {
+  margin-bottom: var(--space-2);
+}
+
+.pcard__lead {
+  margin: 0;
+}
+
+.pcard__more {
+  margin: 0 0 var(--space-4);
+}
+
+.pcard__more summary {
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-term);
+  font-size: var(--fs-sm);
+  color: var(--cyan);
+}
+
+.pcard__more summary::-webkit-details-marker {
+  display: none;
+}
+
+.pcard__more summary:hover,
+.pcard__more summary:focus-visible {
+  color: var(--amber);
+}
+
+.pcard__more[open] summary {
+  margin-bottom: var(--space-4);
+}
+
+.pcard__close,
+.pcard__more[open] .pcard__open {
+  display: none;
+}
+
+.pcard__more[open] .pcard__close {
+  display: inline;
+}
+
+@media (max-width: 560px) {
+  .pcard__cover {
+    width: 64px;
+    height: 64px;
+  }
+}
+
 .project__footer {
   display: flex;
   flex-wrap: wrap;
