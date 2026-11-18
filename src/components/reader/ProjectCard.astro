@@ -17,6 +17,7 @@ const hasMore = rest.trim().length > 0 || view.gallery.length > 0;
 const moreLabel = locale === 'pt' ? 'ler estudo de caso' : 'read case study';
 const lessLabel = locale === 'pt' ? 'recolher' : 'collapse';
 const shots = locale === 'pt' ? 'telas' : 'screens';
+const zoomLabel = locale === 'pt' ? 'Ampliar' : 'Enlarge';
 ---
 
 <div class="pcard">
@@ -48,7 +49,16 @@ const shots = locale === 'pt' ? 'telas' : 'screens';
         {view.gallery.map((image) => (
           <li>
             <figure>
-              <img src={image.src} alt={image.caption ?? `${view.title} — screenshot`} loading="lazy" />
+              <button
+                type="button"
+                class="project__zoom"
+                data-zoom-group={view.slug}
+                data-zoom-src={image.src}
+                data-zoom-caption={image.caption ?? ''}
+                aria-label={`${zoomLabel}: ${image.caption ?? view.title}`}
+              >
+                <img src={image.src} alt={image.caption ?? `${view.title} — screenshot`} loading="lazy" />
+              </button>
               {image.caption && <figcaption>{image.caption}</figcaption>}
             </figure>
           </li>
