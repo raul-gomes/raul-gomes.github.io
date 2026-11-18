@@ -11,13 +11,13 @@ links:
   - { label: code, href: 'https://github.com/raul-gomes' }
 cover: /projects/nacao-patina/00-logo.webp
 gallery:
-  - { src: /projects/nacao-patina/02-feed.webp, caption: Feed with teacher notices and the month's calendar }
-  - { src: /projects/nacao-patina/10-chat.webp, caption: Real-time floating chat opened from a profile }
-  - { src: /projects/nacao-patina/05-comunidade.webp, caption: Community wall and members }
-  - { src: /projects/nacao-patina/06-agenda.webp, caption: Lessons and rides calendar with RSVP }
-  - { src: /projects/nacao-patina/07-desapego.webp, caption: Nação Desapego, the members' marketplace }
-  - { src: /projects/nacao-patina/11-gerenciar.webp, caption: The teacher grants and revokes moderators }
-  - { src: /projects/nacao-patina/08-aulas.webp, caption: YouTube video lessons organized into playlists by the teacher }
+  - { src: /projects/nacao-patina/02-feed.webp, caption: 'Feed with teacher notices and the month''s calendar' }
+  - { src: /projects/nacao-patina/10-chat.webp, caption: 'Real-time floating chat opened from a profile' }
+  - { src: /projects/nacao-patina/05-comunidade.webp, caption: 'Community wall and members' }
+  - { src: /projects/nacao-patina/06-agenda.webp, caption: 'Lessons and rides calendar with RSVP' }
+  - { src: /projects/nacao-patina/07-desapego.webp, caption: 'Nação Desapego, the members'' marketplace' }
+  - { src: /projects/nacao-patina/11-gerenciar.webp, caption: 'The teacher grants and revokes moderators' }
+  - { src: /projects/nacao-patina/08-aulas.webp, caption: 'YouTube video lessons organized into playlists by the teacher' }
 ---
 
 A free social network for a skating community, built to teach people of all ages how to skate: a feed with teacher notices, communities, a lessons and rides calendar, video lessons, a members' marketplace, real-time chat and notifications.

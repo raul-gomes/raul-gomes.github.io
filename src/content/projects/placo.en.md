@@ -10,14 +10,14 @@ links:
   - { label: code, href: 'https://github.com/raul-gomes' }
 cover: /projects/placo/00-logo.webp
 gallery:
-  - { src: /projects/placo/06-visao-geral-desktop.webp, caption: Monthly overview with income, outflows, balance and limits }
-  - { src: /projects/placo/07-financeiro-desktop.webp, caption: Yearly performance with income, outflows and investments }
-  - { src: /projects/placo/09-recorrentes-desktop.webp, caption: Recurring bills filtered by Both, Personal and Business }
-  - { src: /projects/placo/08-limites-desktop.webp, caption: Categories and subcategories with limits per account type }
-  - { src: /projects/placo/01-inicio-celular.webp, caption: On mobile, the month's balance and what is close to its limit }
-  - { src: /projects/placo/02-financeiro-celular.webp, caption: Payment methods and the last six months }
-  - { src: /projects/placo/04-limites-celular.webp, caption: Monthly limit, credit card and spending per category }
-  - { src: /projects/placo/05-novo-lancamento-celular.webp, caption: A new transaction in a single sheet }
+  - { src: /projects/placo/06-visao-geral-desktop.webp, caption: 'Monthly overview with income, outflows, balance and limits' }
+  - { src: /projects/placo/07-financeiro-desktop.webp, caption: 'Yearly performance with income, outflows and investments' }
+  - { src: /projects/placo/09-recorrentes-desktop.webp, caption: 'Recurring bills filtered by Both, Personal and Business' }
+  - { src: /projects/placo/08-limites-desktop.webp, caption: 'Categories and subcategories with limits per account type' }
+  - { src: /projects/placo/01-inicio-celular.webp, caption: 'On mobile, the month''s balance and what is close to its limit' }
+  - { src: /projects/placo/02-financeiro-celular.webp, caption: 'Payment methods and the last six months' }
+  - { src: /projects/placo/04-limites-celular.webp, caption: 'Monthly limit, credit card and spending per category' }
+  - { src: /projects/placo/05-novo-lancamento-celular.webp, caption: 'A new transaction in a single sheet' }
 ---
 
 A financial management platform for people who live with two accounts: their personal one and their company's. In Brazil these are the CPF (personal, PF) and the CNPJ (business, PJ). Transactions, categories, spending limits, recurring bills and goals are kept apart by account type, and the dashboard shows each side or both together.

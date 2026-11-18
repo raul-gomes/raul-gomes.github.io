@@ -12,12 +12,12 @@ links:
   # - { label: Play Store, href: 'https://play.google.com/store/apps/details?id=com.sindicoindica.myapp' }
 cover: /projects/sindico-indica/00-logo.webp
 gallery:
-  - { src: /projects/sindico-indica/01-home.webp, caption: Início com os prestadores mais bem avaliados, nota e distância }
-  - { src: /projects/sindico-indica/02-categoria.webp, caption: Categoria ordenada pela nota e, no empate, pela distância do condomínio }
-  - { src: /projects/sindico-indica/03-prestador.webp, caption: Perfil do prestador com avaliações e contato direto }
-  - { src: /projects/sindico-indica/04-recomendar.webp, caption: Ao recomendar, um telefone já cadastrado mostra o perfil existente }
-  - { src: /projects/sindico-indica/05-avaliar.webp, caption: Avaliação com estrelas, comentário e "contrataria de novo" }
-  - { src: /projects/sindico-indica/06-meu-perfil.webp, caption: O prestador cuida da própria página }
+  - { src: /projects/sindico-indica/01-home.webp, caption: 'Início com os prestadores mais bem avaliados, nota e distância' }
+  - { src: /projects/sindico-indica/02-categoria.webp, caption: 'Categoria ordenada pela nota e, no empate, pela distância do condomínio' }
+  - { src: /projects/sindico-indica/03-prestador.webp, caption: 'Perfil do prestador com avaliações e contato direto' }
+  - { src: /projects/sindico-indica/04-recomendar.webp, caption: 'Ao recomendar, um telefone já cadastrado mostra o perfil existente' }
+  - { src: /projects/sindico-indica/05-avaliar.webp, caption: 'Avaliação com estrelas, comentário e "contrataria de novo"' }
+  - { src: /projects/sindico-indica/06-meu-perfil.webp, caption: 'O prestador cuida da própria página' }
 ---
 
 App para síndicos de condomínio encontrarem prestadores de serviço indicados por outros síndicos: busca por categoria, nota e distância do condomínio, avaliações com "contrataria de novo", contato direto por WhatsApp e um perfil próprio para o prestador cuidar da sua página.
