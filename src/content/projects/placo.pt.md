@@ -10,14 +10,14 @@ links:
   - { label: código, href: 'https://github.com/raul-gomes' }
 cover: /projects/placo/00-logo.webp
 gallery:
-  - { src: /projects/placo/06-visao-geral-desktop.webp, caption: Visão geral do mês com entradas, saídas, saldo e limites }
-  - { src: /projects/placo/07-financeiro-desktop.webp, caption: Rendimento anual com entradas, saídas e investimentos }
-  - { src: /projects/placo/09-recorrentes-desktop.webp, caption: Contas recorrentes com filtro Ambos, PF e PJ }
-  - { src: /projects/placo/08-limites-desktop.webp, caption: Categorias e subcategorias com limites por natureza }
-  - { src: /projects/placo/01-inicio-celular.webp, caption: No celular, o saldo do mês e o que está perto do limite }
-  - { src: /projects/placo/02-financeiro-celular.webp, caption: Formas de pagamento e os últimos seis meses }
-  - { src: /projects/placo/04-limites-celular.webp, caption: Limite mensal, cartão e gasto por categoria }
-  - { src: /projects/placo/05-novo-lancamento-celular.webp, caption: Novo lançamento em uma folha só }
+  - { src: /projects/placo/06-visao-geral-desktop.webp, caption: 'Visão geral do mês com entradas, saídas, saldo e limites' }
+  - { src: /projects/placo/07-financeiro-desktop.webp, caption: 'Rendimento anual com entradas, saídas e investimentos' }
+  - { src: /projects/placo/09-recorrentes-desktop.webp, caption: 'Contas recorrentes com filtro Ambos, PF e PJ' }
+  - { src: /projects/placo/08-limites-desktop.webp, caption: 'Categorias e subcategorias com limites por natureza' }
+  - { src: /projects/placo/01-inicio-celular.webp, caption: 'No celular, o saldo do mês e o que está perto do limite' }
+  - { src: /projects/placo/02-financeiro-celular.webp, caption: 'Formas de pagamento e os últimos seis meses' }
+  - { src: /projects/placo/04-limites-celular.webp, caption: 'Limite mensal, cartão e gasto por categoria' }
+  - { src: /projects/placo/05-novo-lancamento-celular.webp, caption: 'Novo lançamento em uma folha só' }
 ---
 
 Plataforma de gestão financeira para quem vive com duas contas: a pessoal (PF) e a da empresa (PJ). Os lançamentos, as categorias, os limites de gasto, as contas recorrentes e as metas ficam separados por natureza, e o dashboard mostra cada lado ou os dois juntos.

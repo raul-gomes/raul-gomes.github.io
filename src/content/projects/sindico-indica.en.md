@@ -12,12 +12,12 @@ links:
   # - { label: Play Store, href: 'https://play.google.com/store/apps/details?id=com.sindicoindica.myapp' }
 cover: /projects/sindico-indica/00-logo.webp
 gallery:
-  - { src: /projects/sindico-indica/01-home.webp, caption: Home with the best rated providers, rating and distance }
-  - { src: /projects/sindico-indica/02-categoria.webp, caption: A category sorted by rating and, on ties, by distance to the building }
-  - { src: /projects/sindico-indica/03-prestador.webp, caption: Provider profile with reviews and direct contact }
-  - { src: /projects/sindico-indica/04-recomendar.webp, caption: When recommending, a phone already on file shows the existing profile }
-  - { src: /projects/sindico-indica/05-avaliar.webp, caption: Review with stars, a comment and "would hire again" }
-  - { src: /projects/sindico-indica/06-meu-perfil.webp, caption: Providers manage their own page }
+  - { src: /projects/sindico-indica/01-home.webp, caption: 'Home with the best rated providers, rating and distance' }
+  - { src: /projects/sindico-indica/02-categoria.webp, caption: 'A category sorted by rating and, on ties, by distance to the building' }
+  - { src: /projects/sindico-indica/03-prestador.webp, caption: 'Provider profile with reviews and direct contact' }
+  - { src: /projects/sindico-indica/04-recomendar.webp, caption: 'When recommending, a phone already on file shows the existing profile' }
+  - { src: /projects/sindico-indica/05-avaliar.webp, caption: 'Review with stars, a comment and "would hire again"' }
+  - { src: /projects/sindico-indica/06-meu-perfil.webp, caption: 'Providers manage their own page' }
 ---
 
 An app for building managers (síndicos) to find service providers recommended by other building managers: search by category, rating and distance to the building, reviews with "would hire again", direct WhatsApp contact and a profile that providers manage themselves.

@@ -8,7 +8,7 @@ import type { Locale } from '@data/types';
 import { getPage, getProjects, getExperience } from '@lib/content';
 import ModeToggle from '@components/shared/ModeToggle.astro';
 import LangToggle from '@components/shared/LangToggle.astro';
-import ProjectBody from '@components/shared/ProjectBody.astro';
+import ProjectCard from '@components/reader/ProjectCard.astro';
 import SkillInventory from '@components/reader/SkillInventory.astro';
 
 interface Props {
@@ -84,7 +84,7 @@ const nav = [
               <span class="win__dots"><i></i><i></i><i></i></span>
             </div>
             <div class="win__body">
-              <ProjectBody view={project} locale={locale} />
+              <ProjectCard view={project} locale={locale} />
             </div>
           </article>
         ))}
@@ -182,6 +182,19 @@ const nav = [
     </section>
   </main>
 
+  <dialog class="lightbox" data-lightbox aria-label={locale === 'pt' ? 'Tela ampliada' : 'Enlarged screen'}>
+    <button type="button" class="lightbox__close" data-lightbox-close aria-label={locale === 'pt' ? 'Fechar' : 'Close'}>[x]</button>
+    <figure class="lightbox__figure">
+      <img data-lightbox-image alt="" />
+      <figcaption>
+        <span data-lightbox-caption></span>
+        <span class="lightbox__counter" data-lightbox-counter></span>
+      </figcaption>
+    </figure>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label={locale === 'pt' ? 'Tela anterior' : 'Previous screen'}>&lt;</button>
+    <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label={locale === 'pt' ? 'Próxima tela' : 'Next screen'}>&gt;</button>
+  </dialog>
+
   <footer class="footer">
     <span>&copy; {new Date().getFullYear()} {profile.name}</span>
     <span>nostromo terminal // v1.0</span>
@@ -190,6 +203,11 @@ const nav = [
 
 <script>
   import { mountSkillInventory } from '@scripts/skill-inventory';
+  import { mountLightbox } from '@scripts/lightbox';
+
+  const reader = document.querySelector<HTMLElement>('[data-shell="reader"]');
+  const lightbox = reader?.querySelector<HTMLDialogElement>('[data-lightbox]');
+  if (reader && lightbox) mountLightbox(lightbox, reader);
 
   document
     .querySelectorAll<HTMLElement>('[data-shell="reader"] [data-skill-inventory]')

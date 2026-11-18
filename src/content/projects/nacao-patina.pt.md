@@ -11,13 +11,13 @@ links:
   - { label: código, href: 'https://github.com/raul-gomes' }
 cover: /projects/nacao-patina/00-logo.webp
 gallery:
-  - { src: /projects/nacao-patina/02-feed.webp, caption: Feed com avisos do professor e agenda do mês }
-  - { src: /projects/nacao-patina/10-chat.webp, caption: Chat flutuante em tempo real aberto pelo perfil }
-  - { src: /projects/nacao-patina/05-comunidade.webp, caption: Comunidade com mural e membros }
-  - { src: /projects/nacao-patina/06-agenda.webp, caption: Agenda de aulas e rolês com confirmação de presença }
-  - { src: /projects/nacao-patina/07-desapego.webp, caption: Nação Desapego, os classificados entre membros }
-  - { src: /projects/nacao-patina/11-gerenciar.webp, caption: Professor concede e remove moderadores }
-  - { src: /projects/nacao-patina/08-aulas.webp, caption: Videoaulas do YouTube organizadas em playlists pelo professor }
+  - { src: /projects/nacao-patina/02-feed.webp, caption: 'Feed com avisos do professor e agenda do mês' }
+  - { src: /projects/nacao-patina/10-chat.webp, caption: 'Chat flutuante em tempo real aberto pelo perfil' }
+  - { src: /projects/nacao-patina/05-comunidade.webp, caption: 'Comunidade com mural e membros' }
+  - { src: /projects/nacao-patina/06-agenda.webp, caption: 'Agenda de aulas e rolês com confirmação de presença' }
+  - { src: /projects/nacao-patina/07-desapego.webp, caption: 'Nação Desapego, os classificados entre membros' }
+  - { src: /projects/nacao-patina/11-gerenciar.webp, caption: 'Professor concede e remove moderadores' }
+  - { src: /projects/nacao-patina/08-aulas.webp, caption: 'Videoaulas do YouTube organizadas em playlists pelo professor' }
 ---
 
 Rede social gratuita de uma comunidade de patinação, feita para ensinar pessoas de todas as idades a andar de patins: feed com avisos do professor, comunidades, agenda de aulas e rolês, videoaulas, classificados entre membros, chat em tempo real e notificações.

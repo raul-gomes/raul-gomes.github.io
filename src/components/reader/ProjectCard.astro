@@ -1,0 +1,74 @@
+---
+import { ui } from '@data/i18n';
+import type { Locale } from '@data/types';
+import type { SectionView } from '@lib/content';
+import { splitLead } from '@lib/lead';
+
+interface Props {
+  view: SectionView;
+  locale: Locale;
+}
+
+const { view, locale } = Astro.props;
+const t = ui[locale];
+const status = view.status ? t.desktop.statusLabels[view.status] : '';
+const { lead, rest } = splitLead(view.bodyHtml);
+const hasMore = rest.trim().length > 0 || view.gallery.length > 0;
+const moreLabel = locale === 'pt' ? 'ler estudo de caso' : 'read case study';
+const lessLabel = locale === 'pt' ? 'recolher' : 'collapse';
+const shots = locale === 'pt' ? 'telas' : 'screens';
+const zoomLabel = locale === 'pt' ? 'Ampliar' : 'Enlarge';
+---
+
+<div class="pcard">
+  {view.cover && (
+    <img class="pcard__cover" src={view.cover} alt={`${view.title} — logo`} loading="lazy" width="96" height="96" />
+  )}
+  <div class="pcard__main">
+    <h2 class="project__title">{view.title}</h2>
+    {view.tagline && <p class="project__tagline">{view.tagline}</p>}
+    {lead && <div class="project__readme pcard__lead" set:html={lead} />}
+  </div>
+</div>
+
+{view.tags.length > 0 && (
+  <ul class="tags" aria-label="stack">
+    {view.tags.map((item) => <li>{item}</li>)}
+  </ul>
+)}
+
+{hasMore && (
+  <details class="pcard__more">
+    <summary>
+      <span class="pcard__open">[+] {moreLabel}{view.gallery.length > 0 && ` · ${view.gallery.length} ${shots}`}</span>
+      <span class="pcard__close">[−] {lessLabel}</span>
+    </summary>
+    {rest.trim() && <div class="project__readme" set:html={rest} />}
+    {view.gallery.length > 0 && (
+      <ul class="project__gallery" aria-label={`${view.title} — ${locale === 'pt' ? 'galeria' : 'gallery'}`}>
+        {view.gallery.map((image) => (
+          <li>
+            <figure>
+              <button
+                type="button"
+                class="project__zoom"
+                data-zoom-group={view.slug}
+                data-zoom-src={image.src}
+                data-zoom-caption={image.caption ?? ''}
+                aria-label={`${zoomLabel}: ${image.caption ?? view.title}`}
+              >
+                <img src={image.src} alt={image.caption ?? `${view.title} — screenshot`} loading="lazy" />
+              </button>
+              {image.caption && <figcaption>{image.caption}</figcaption>}
+            </figure>
+          </li>
+        ))}
+      </ul>
+    )}
+  </details>
+)}
+
+<div class="project__footer">
+  {status && <span class="status" data-status={view.status}>{status}</span>}
+  {view.links.map((link) => <a href={link.href} target="_blank" rel="noopener noreferrer">[{link.label}]</a>)}
+</div>
