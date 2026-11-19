@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pipeline medalhão: bronze, silver e gold">
+<defs><marker id="head" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ffb000"/></marker></defs>
+<rect width="512" height="512" rx="56" fill="#0a0a0c"/>
+<rect x="14" y="14" width="484" height="484" rx="46" fill="none" stroke="#3a2c12" stroke-width="6"/>
+<path d="M56.0,290 v110 a60.0,17.142857142857142 0 0 0 120,0 v-110" fill="#cd7f32" fill-opacity=".18" stroke="#cd7f32" stroke-width="10"/><path d="M56.0,345.0 a60.0,17.142857142857142 0 0 0 120,0" fill="none" stroke="#cd7f32" stroke-width="6" opacity=".7"/><ellipse cx="116" cy="290" rx="60.0" ry="17.142857142857142" fill="#0a0a0c" stroke="#cd7f32" stroke-width="10"/>
+<path d="M196.0,200 v110 a60.0,17.142857142857142 0 0 0 120,0 v-110" fill="#c9ccd1" fill-opacity=".18" stroke="#c9ccd1" stroke-width="10"/><path d="M196.0,255.0 a60.0,17.142857142857142 0 0 0 120,0" fill="none" stroke="#c9ccd1" stroke-width="6" opacity=".7"/><ellipse cx="256" cy="200" rx="60.0" ry="17.142857142857142" fill="#0a0a0c" stroke="#c9ccd1" stroke-width="10"/>
+<path d="M336.0,110 v110 a60.0,17.142857142857142 0 0 0 120,0 v-110" fill="#ffc83d" fill-opacity=".18" stroke="#ffc83d" stroke-width="10"/><path d="M336.0,165.0 a60.0,17.142857142857142 0 0 0 120,0" fill="none" stroke="#ffc83d" stroke-width="6" opacity=".7"/><ellipse cx="396" cy="110" rx="60.0" ry="17.142857142857142" fill="#0a0a0c" stroke="#ffc83d" stroke-width="10"/>
+<line x1="150" y1="250" x2="196" y2="218" stroke="#ffb000" stroke-width="8" stroke-linecap="round" marker-end="url(#head)"/>
+<line x1="290" y1="160" x2="336" y2="128" stroke="#ffb000" stroke-width="8" stroke-linecap="round" marker-end="url(#head)"/>
+<text x="256" y="470" text-anchor="middle" font-family="ui-monospace, 'DejaVu Sans Mono', 'Courier New', monospace" font-size="44" font-weight="700" fill="#ffd39b" letter-spacing="6">B · S · G</text>
+</svg>

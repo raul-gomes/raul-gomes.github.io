@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2180 1036" role="img" aria-label="Fluxo do pipeline e estrutura das tabelas bronze, silver e gold" font-family="ui-monospace, 'DejaVu Sans Mono', 'Courier New', monospace">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ffb000"/></marker></defs>
+<rect width="2180" height="1036" fill="#0a0a0c"/>
+<text x="40" y="70" font-size="34" font-weight="700" fill="#ffd39b" letter-spacing="2">Pipeline medalhão no Databricks</text>
+<text x="40" y="102" font-size="17" fill="#b98a4a">da API ao dashboard: fluxo e estrutura das tabelas Delta</text>
+<text x="40" y="150" font-size="26" font-weight="700" fill="#ffd39b" letter-spacing="3">FONTE</text><text x="40" y="176" font-size="15" fill="#b98a4a">API REST pública</text>
+<rect x="40" y="210" width="180" height="120" rx="8" fill="#16161d" stroke="#ffd39b" stroke-width="2"/><text x="130" y="262" font-size="22" font-weight="700" text-anchor="middle" fill="#ffd39b">PokeAPI</text><text x="130" y="292" font-size="14" text-anchor="middle" fill="#b98a4a">/pokemon/{id}</text>
+<text x="370" y="150" font-size="26" font-weight="700" fill="#cd7f32" letter-spacing="3">BRONZE</text><text x="370" y="176" font-size="15" fill="#b98a4a">JSON cru + metadados de carga</text>
+<rect x="370" y="210" width="330" height="200" rx="8" fill="#16161d" stroke="#cd7f32" stroke-width="2"/>
+<rect x="370" y="210" width="330" height="34" rx="8" fill="#cd7f32" fill-opacity=".22"/>
+<text x="384" y="233" font-size="17" font-weight="700" fill="#ffd39b">pokemons_raw</text>
+<text x="384" y="264" font-size="15" fill="#ffd39b">pokemon_id</text>
+<text x="686" y="264" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="384" y="290" font-size="15" fill="#ffd39b">raw_json</text>
+<text x="686" y="290" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="384" y="316" font-size="15" fill="#ffd39b">ingestion_ts</text>
+<text x="686" y="316" font-size="13" text-anchor="end" fill="#b98a4a">timestamp</text>
+<text x="384" y="342" font-size="15" fill="#00e5ff">◆ ingestion_date</text>
+<text x="686" y="342" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="384" y="368" font-size="15" fill="#ffd39b">source_system</text>
+<text x="686" y="368" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="384" y="394" font-size="15" fill="#ffd39b">api_status_code</text>
+<text x="686" y="394" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="850" y="150" font-size="26" font-weight="700" fill="#c9ccd1" letter-spacing="3">SILVER</text><text x="850" y="176" font-size="15" fill="#b98a4a">normalizada, uma partição por dia</text>
+<rect x="850" y="210" width="330" height="252" rx="8" fill="#16161d" stroke="#c9ccd1" stroke-width="2"/>
+<rect x="850" y="210" width="330" height="34" rx="8" fill="#c9ccd1" fill-opacity=".22"/>
+<text x="864" y="233" font-size="17" font-weight="700" fill="#ffd39b">pokemon</text>
+<text x="864" y="264" font-size="15" fill="#ffd39b">pokemon_id</text>
+<text x="1166" y="264" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="864" y="290" font-size="15" fill="#ffd39b">api_id</text>
+<text x="1166" y="290" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="864" y="316" font-size="15" fill="#ffd39b">name_clean</text>
+<text x="1166" y="316" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="864" y="342" font-size="15" fill="#ffd39b">height_cm</text>
+<text x="1166" y="342" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="864" y="368" font-size="15" fill="#ffd39b">weight_kg</text>
+<text x="1166" y="368" font-size="13" text-anchor="end" fill="#b98a4a">double</text>
+<text x="864" y="394" font-size="15" fill="#ffd39b">base_xp</text>
+<text x="1166" y="394" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="864" y="420" font-size="15" fill="#ffd39b">is_default_variant</text>
+<text x="1166" y="420" font-size="13" text-anchor="end" fill="#b98a4a">boolean</text>
+<text x="864" y="446" font-size="15" fill="#00e5ff">◆ ingestion_date</text>
+<text x="1166" y="446" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<rect x="850" y="488" width="330" height="148" rx="8" fill="#16161d" stroke="#c9ccd1" stroke-width="2"/>
+<rect x="850" y="488" width="330" height="34" rx="8" fill="#c9ccd1" fill-opacity=".22"/>
+<text x="864" y="511" font-size="17" font-weight="700" fill="#ffd39b">types</text>
+<text x="864" y="542" font-size="15" fill="#ffd39b">pokemon_id</text>
+<text x="1166" y="542" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="864" y="568" font-size="15" fill="#ffd39b">type_slot</text>
+<text x="1166" y="568" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="864" y="594" font-size="15" fill="#ffd39b">type_name</text>
+<text x="1166" y="594" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="864" y="620" font-size="15" fill="#00e5ff">◆ ingestion_date</text>
+<text x="1166" y="620" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<rect x="850" y="662" width="330" height="174" rx="8" fill="#16161d" stroke="#c9ccd1" stroke-width="2"/>
+<rect x="850" y="662" width="330" height="34" rx="8" fill="#c9ccd1" fill-opacity=".22"/>
+<text x="864" y="685" font-size="17" font-weight="700" fill="#ffd39b">pokemon_stats</text>
+<text x="864" y="716" font-size="15" fill="#ffd39b">pokemon_id</text>
+<text x="1166" y="716" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="864" y="742" font-size="15" fill="#ffd39b">stat_name</text>
+<text x="1166" y="742" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="864" y="768" font-size="15" fill="#ffd39b">base_stat_value</text>
+<text x="1166" y="768" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="864" y="794" font-size="15" fill="#ffd39b">effort_value</text>
+<text x="1166" y="794" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="864" y="820" font-size="15" fill="#00e5ff">◆ ingestion_date</text>
+<text x="1166" y="820" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="1330" y="150" font-size="26" font-weight="700" fill="#ffc83d" letter-spacing="3">GOLD</text><text x="1330" y="176" font-size="15" fill="#b98a4a">métricas e rankings da data processada</text>
+<rect x="1330" y="210" width="330" height="304" rx="8" fill="#16161d" stroke="#ffc83d" stroke-width="2"/>
+<rect x="1330" y="210" width="330" height="34" rx="8" fill="#ffc83d" fill-opacity=".22"/>
+<text x="1344" y="233" font-size="17" font-weight="700" fill="#ffd39b">pokemon_overview</text>
+<text x="1344" y="264" font-size="15" fill="#ffd39b">pokemon_id</text>
+<text x="1646" y="264" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="1344" y="290" font-size="15" fill="#ffd39b">name</text>
+<text x="1646" y="290" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="1344" y="316" font-size="15" fill="#ffd39b">primary_type</text>
+<text x="1646" y="316" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="1344" y="342" font-size="15" fill="#ffd39b">height_cm</text>
+<text x="1646" y="342" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="1344" y="368" font-size="15" fill="#ffd39b">weight_kg</text>
+<text x="1646" y="368" font-size="13" text-anchor="end" fill="#b98a4a">double</text>
+<text x="1344" y="394" font-size="15" fill="#ffd39b">base_xp</text>
+<text x="1646" y="394" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="1344" y="420" font-size="15" fill="#ffd39b">hp · attack · defense</text>
+<text x="1646" y="420" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="1344" y="446" font-size="15" fill="#ffd39b">special_attack · _defense</text>
+<text x="1646" y="446" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="1344" y="472" font-size="15" fill="#ffd39b">speed</text>
+<text x="1646" y="472" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="1344" y="498" font-size="15" fill="#ffd39b">total_power</text>
+<text x="1646" y="498" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<rect x="1330" y="540" width="330" height="174" rx="8" fill="#16161d" stroke="#ffc83d" stroke-width="2"/>
+<rect x="1330" y="540" width="330" height="34" rx="8" fill="#ffc83d" fill-opacity=".22"/>
+<text x="1344" y="563" font-size="17" font-weight="700" fill="#ffd39b">type_power_ranking</text>
+<text x="1344" y="594" font-size="15" fill="#ffd39b">primary_type</text>
+<text x="1646" y="594" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="1344" y="620" font-size="15" fill="#ffd39b">pokemon_count</text>
+<text x="1646" y="620" font-size="13" text-anchor="end" fill="#b98a4a">long</text>
+<text x="1344" y="646" font-size="15" fill="#ffd39b">average_total_power</text>
+<text x="1646" y="646" font-size="13" text-anchor="end" fill="#b98a4a">double</text>
+<text x="1344" y="672" font-size="15" fill="#ffd39b">avg_attack · avg_defense</text>
+<text x="1646" y="672" font-size="13" text-anchor="end" fill="#b98a4a">double</text>
+<text x="1344" y="698" font-size="15" fill="#ffd39b">avg_hp · avg_speed</text>
+<text x="1646" y="698" font-size="13" text-anchor="end" fill="#b98a4a">double</text>
+<rect x="1330" y="740" width="330" height="200" rx="8" fill="#16161d" stroke="#ffc83d" stroke-width="2"/>
+<rect x="1330" y="740" width="330" height="34" rx="8" fill="#ffc83d" fill-opacity=".22"/>
+<text x="1344" y="763" font-size="17" font-weight="700" fill="#ffd39b">pokemon_tier_list</text>
+<text x="1344" y="794" font-size="15" fill="#ffd39b">pokemon_id</text>
+<text x="1646" y="794" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="1344" y="820" font-size="15" fill="#ffd39b">name</text>
+<text x="1646" y="820" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="1344" y="846" font-size="15" fill="#ffd39b">primary_type</text>
+<text x="1646" y="846" font-size="13" text-anchor="end" fill="#b98a4a">string</text>
+<text x="1344" y="872" font-size="15" fill="#ffd39b">total_power</text>
+<text x="1646" y="872" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="1344" y="898" font-size="15" fill="#ffd39b">rank_overall</text>
+<text x="1646" y="898" font-size="13" text-anchor="end" fill="#b98a4a">int</text>
+<text x="1344" y="924" font-size="15" fill="#ffd39b">tier_label</text>
+<text x="1646" y="924" font-size="13" text-anchor="end" fill="#b98a4a">S·A·B·C</text>
+<text x="1810" y="150" font-size="26" font-weight="700" fill="#ffb000" letter-spacing="3">SQL</text><text x="1810" y="176" font-size="15" fill="#b98a4a">views do dashboard</text>
+<rect x="1810" y="210" width="330" height="62" rx="8" fill="#16161d" stroke="#ffb000" stroke-width="2" stroke-dasharray="6 4"/><text x="1824" y="236" font-size="16" font-weight="700" fill="#ffd39b">vw_pokemon_top_ranking</text><text x="1824" y="258" font-size="14" fill="#b98a4a">tiers S e A</text>
+<rect x="1810" y="290" width="330" height="62" rx="8" fill="#16161d" stroke="#ffb000" stroke-width="2" stroke-dasharray="6 4"/><text x="1824" y="316" font-size="16" font-weight="700" fill="#ffd39b">vw_type_power_comparison</text><text x="1824" y="338" font-size="14" fill="#b98a4a">força média por tipo</text>
+<rect x="1810" y="370" width="330" height="62" rx="8" fill="#16161d" stroke="#ffb000" stroke-width="2" stroke-dasharray="6 4"/><text x="1824" y="396" font-size="16" font-weight="700" fill="#ffd39b">vw_pokemon_attack_defense</text><text x="1824" y="418" font-size="14" fill="#b98a4a">glass cannon · tank</text>
+<rect x="1810" y="450" width="330" height="62" rx="8" fill="#16161d" stroke="#ffb000" stroke-width="2" stroke-dasharray="6 4"/><text x="1824" y="476" font-size="16" font-weight="700" fill="#ffd39b">vw_pokemon_summary</text><text x="1824" y="498" font-size="14" fill="#b98a4a">KPIs gerais</text>
+<line x1="230" y1="270" x2="362" y2="270" stroke="#ffb000" stroke-width="3" marker-end="url(#arrow)"/><text x="296.0" y="258" font-size="14" text-anchor="middle" fill="#ffb000">requests</text><text x="296.0" y="294" font-size="14" text-anchor="middle" fill="#ffb000">HTTP</text>
+<line x1="706" y1="270" x2="842" y2="270" stroke="#ffb000" stroke-width="3" marker-end="url(#arrow)"/><text x="774.0" y="258" font-size="14" text-anchor="middle" fill="#ffb000">from_json</text><text x="774.0" y="294" font-size="14" text-anchor="middle" fill="#ffb000">explode</text>
+<line x1="1186" y1="270" x2="1322" y2="270" stroke="#ffb000" stroke-width="3" marker-end="url(#arrow)"/><text x="1254.0" y="258" font-size="14" text-anchor="middle" fill="#ffb000">pivot · join</text><text x="1254.0" y="294" font-size="14" text-anchor="middle" fill="#ffb000">window</text>
+<line x1="1666" y1="270" x2="1802" y2="270" stroke="#ffb000" stroke-width="3" marker-end="url(#arrow)"/><text x="1734.0" y="258" font-size="14" text-anchor="middle" fill="#ffb000">Databricks</text><text x="1734.0" y="294" font-size="14" text-anchor="middle" fill="#ffb000">SQL</text>
+<text x="40" y="1002" font-size="15" fill="#00e5ff">◆ partição (replaceWhere por data: reprocessar um dia não duplica nem apaga os outros)</text>
+<text x="2140" y="1002" font-size="15" text-anchor="end" fill="#b98a4a">Delta Lake · Unity Catalog: pokemons.bronze / .silver / .gold · Job: bronze → silver → gold</text>
+</svg>
