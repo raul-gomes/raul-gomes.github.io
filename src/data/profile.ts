@@ -16,7 +16,10 @@ export const profile: Profile = {
   website: 'https://raul-gomes.github.io/',
   github: 'https://github.com/raul-gomes',
   linkedin: 'https://www.linkedin.com/in/raulsgomes',
-  cvPath: '/cv/Raul_SGomes_CV.pdf',
+  cvPath: {
+    pt: '/cv/Raul_SGomes_CV-pt.pdf',
+    en: '/cv/Raul_SGomes_CV-en.pdf',
+  },
   bioShort: {
     pt: 'Full stack com base em Python e dados, entregando produto do requisito ao deploy.',
     en: 'Full stack with a Python and data foundation, shipping products from requirements to deployment.',

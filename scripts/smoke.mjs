@@ -26,10 +26,11 @@ check('reader: hero name', (await page.locator('.hero__name').innerText()).inclu
 check('reader: projects present', (await page.locator('.win').count()) === 4);
 check('reader: nav anchors', (await page.locator('.bar__nav a').count()) === 6);
 check('reader: desktop hidden', !(await page.locator('.desk').isVisible()));
-check('reader: cv link', (await page.locator('a.cta').getAttribute('href')) === '/cv/Raul_SGomes_CV.pdf');
+check('reader: cv link', (await page.locator('a.cta').getAttribute('href')) === '/cv/Raul_SGomes_CV-pt.pdf');
 
 await page.goto(`${BASE}/en/`, { waitUntil: 'networkidle' });
 check('en: locale attr', (await page.getAttribute('html', 'data-locale')) === 'en');
+check('en: cv link', (await page.locator('a.cta').getAttribute('href')) === '/cv/Raul_SGomes_CV-en.pdf');
 check('en: hero role', (await page.locator('.hero__role').innerText()).toLowerCase().includes('software engineer'));
 check('en: project tagline', (await page.locator('.project__tagline').first().innerText()).includes('Financial BPO'));
 

@@ -6,6 +6,11 @@ status: live
 stack: [Next.js 16, React 19, TypeScript, Supabase, PostgreSQL, Cloudflare R2, Tailwind CSS, Vitest, pgTAP, Docker]
 icon: mushroom
 order: 3
+cv:
+  goal: "Tirar uma comunidade de patinação do WhatsApp e dar a ela uma rede social própria, com feed, agenda de aulas, classificados e chat."
+  highlights:
+    - "Row Level Security em todas as 25 tabelas (80 políticas): a autorização mora no banco."
+    - "Renderização no servidor e contagens em uma única consulta: 49% menos JavaScript por página."
 links:
   - { label: site, href: 'https://nacaopatina.vercel.app' }
   - { label: código, href: 'https://github.com/raul-gomes' }

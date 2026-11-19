@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content';
 import type { Locale } from '@data/types';
+import { buildCvProjects, extractBullets, type CvProject, type CvProjectInput } from './cv';
 
 const imageUrls = import.meta.glob('../img/**/*.{png,jpg,jpeg,webp,avif,gif,svg}', {
   eager: true,
@@ -97,4 +98,52 @@ export async function getPage(kind: 'about' | 'skills' | 'education' | 'contact'
     (entry) => (entry.data as { lang?: string }).lang === locale && (entry.data as { kind?: string }).kind === kind,
   )) as unknown as EntryLike[];
   return entries.map(toView)[0];
+}
+
+/** Content needed to render the CV, read from the same collections as the site. */
+export interface CvContent {
+  projects: CvProject[];
+  experience: CvExperience[];
+}
+
+export interface CvExperience {
+  title: string;
+  company: string;
+  period: string;
+  bullets: string[];
+}
+
+interface CvEntry {
+  id: string;
+  body?: string;
+  data: Record<string, unknown>;
+}
+
+/** Loads the projects and experience shown on the CV for a locale. */
+export async function getCvContent(locale: Locale): Promise<CvContent> {
+  const byLocale = (entry: { data: unknown }): boolean => (entry.data as { lang?: string }).lang === locale;
+  const projectEntries = (await getCollection('projects', byLocale)) as unknown as CvEntry[];
+  const experienceEntries = (await getCollection('experience', byLocale)) as unknown as CvEntry[];
+
+  const projects = buildCvProjects(
+    projectEntries.map((entry) => ({
+      slug: slugOf(entry.id),
+      title: String(entry.data.title),
+      status: entry.data.status as CvProjectInput['status'],
+      order: Number(entry.data.order),
+      stack: entry.data.stack as string[],
+      cv: entry.data.cv as CvProjectInput['cv'],
+    })),
+  );
+
+  const experience = experienceEntries
+    .sort((a, b) => Number(a.data.order) - Number(b.data.order))
+    .map((entry) => ({
+      title: String(entry.data.title),
+      company: String(entry.data.company),
+      period: String(entry.data.period),
+      bullets: extractBullets(entry.body ?? ''),
+    }));
+
+  return { projects, experience };
 }

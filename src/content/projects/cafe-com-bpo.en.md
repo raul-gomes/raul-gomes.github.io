@@ -6,6 +6,11 @@ status: live
 stack: [FastAPI, Pydantic v2, SQLAlchemy, Alembic, PostgreSQL 16, React 18, TypeScript, Vite, TanStack Query, React Hook Form + Zod, Docker Compose, Nginx, SSE, Resend, Cloudinary, GitHub Actions]
 icon: pacman
 order: 1
+cv:
+  goal: "Run the operation of financial BPO firms, from client acquisition to the monthly routine; live, with subscriptions."
+  highlights:
+    - "Modular monolith with 24 domain modules, a DDD pricing engine and real-time updates via SSE fed by PostgreSQL LISTEN/NOTIFY."
+    - "2,246 automated tests (88% backend coverage), CI that rehearses all 95+ migrations and Semgrep as a security gate."
 links:
   - { label: site, href: 'https://cafecombpo.com/' }
 cover: src/img/logo.svg

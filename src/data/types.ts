@@ -11,7 +11,7 @@ export interface Profile {
   website: string;
   github: string;
   linkedin: string;
-  cvPath: string;
+  cvPath: Localized<string>;
   bioShort: Localized<string>;
   bioLong: Localized<string>;
 }

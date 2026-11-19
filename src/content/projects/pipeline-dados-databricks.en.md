@@ -6,6 +6,10 @@ status: live
 stack: [Databricks, SQL, ETL/ELT, Data Lakes, Medallion architecture]
 icon: matrix
 order: 5
+cv:
+  goal: "End-to-end pipeline that collects data over HTTP and delivers SQL queries ready for dashboards and KPIs."
+  highlights:
+    - "Medallion architecture: ingestion in bronze, validation and transformation in silver and gold."
 cover: /placeholder/pipeline-dados-databricks/0.svg
 gallery:
   - { src: /placeholder/pipeline-dados-databricks/1.svg, caption: Bronze layer }

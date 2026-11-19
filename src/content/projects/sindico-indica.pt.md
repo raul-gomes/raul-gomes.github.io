@@ -6,6 +6,11 @@ status: wip
 stack: [Expo, React Native, TypeScript, Supabase, PostgreSQL, PostGIS, Next.js, Jest, pgTAP, EAS]
 icon: magnifier
 order: 4
+cv:
+  goal: "App mobile para síndicos encontrarem prestadores de serviço indicados por outros síndicos, por nota e distância do condomínio."
+  highlights:
+    - "Busca, ordenação por nota e distância (PostGIS) e paginação em uma única função do PostgreSQL, com base inicial de 2.200+ prestadores."
+    - "RLS em todas as 12 tabelas e exclusão de conta real, de acordo com a LGPD."
 links:
   - { label: código, href: 'https://github.com/raul-gomes' }
   # Reservado: descomentar quando o app estiver publicado na Play Store.

@@ -1,0 +1,135 @@
+---
+/**
+ * Print-ready CV built from the same data as the site (profile, stack,
+ * content collections, education, certifications). `npm run build` prints
+ * this page to PDF, so the downloadable CV is always current.
+ */
+import { profile } from '@data/profile';
+import { stack } from '@data/stack';
+import { education, languages } from '@data/education';
+import { certifications, awards } from '@data/certs';
+import { cvLabels } from '@data/cv-labels';
+import type { Locale } from '@data/types';
+import { getCvContent } from '@lib/content';
+import { CV_SUMMARY_PARAGRAPHS, summaryParagraphs } from '@lib/cv';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const labels = cvLabels[locale];
+const { projects, experience } = await getCvContent(locale);
+const summary = summaryParagraphs(profile.bioLong[locale], CV_SUMMARY_PARAGRAPHS);
+const htmlLang = locale === 'pt' ? 'pt-BR' : 'en';
+const displayUrl = (url: string): string => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{profile.name} — {labels.documentTitle}</title>
+    <style is:inline>
+      @page { size: A4; margin: 12mm 13mm; }
+      * { box-sizing: border-box; }
+      body { font-family: "Segoe UI", Arial, sans-serif; font-size: 9.4pt; line-height: 1.34; color: #1b1b1b; margin: 0 auto; max-width: 184mm; background: #fff; }
+      h1 { font-size: 20pt; margin: 0 0 1.5mm; letter-spacing: .4px; }
+      .role { font-size: 10.8pt; font-weight: 600; color: #0b5c6b; margin-bottom: 2mm; }
+      .contact { font-size: 8.7pt; color: #333; margin-bottom: 4mm; display: flex; flex-wrap: wrap; gap: 0 4mm; }
+      .contact span { white-space: nowrap; }
+      h2 { font-size: 10.8pt; text-transform: uppercase; letter-spacing: .8px; color: #0b5c6b; border-bottom: 1.1px solid #0b5c6b; padding-bottom: 1mm; margin: 4.5mm 0 2.2mm; break-after: avoid; }
+      h3 { font-size: 9.8pt; margin: 0 0 .6mm; break-after: avoid; }
+      p { margin: 0 0 1.8mm; }
+      ul { margin: 0 0 2mm 4mm; padding: 0; }
+      li { margin-bottom: .7mm; }
+      .item { margin-bottom: 2.8mm; break-inside: avoid; }
+      .item-head { display: flex; justify-content: space-between; gap: 4mm; align-items: baseline; }
+      .period { white-space: nowrap; color: #555; font-size: 8.7pt; }
+      .company { color: #555; font-size: 8.9pt; margin-bottom: .9mm; }
+      .muted { color: #555; font-weight: normal; }
+      .stack { font-size: 8.7pt; color: #333; margin: 0; }
+      .stack strong { color: #0b5c6b; }
+      .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4mm 7mm; }
+      .skills p { margin: 0; break-inside: avoid; }
+      .skills strong { color: #0b5c6b; }
+      .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8mm; }
+      .compact { margin-bottom: 1.2mm; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>{profile.name}</h1>
+      <div class="role">{profile.role[locale]}</div>
+      <div class="contact">
+        <span>{profile.location[locale]}</span>
+        <span>{profile.phone}</span>
+        <span>{profile.email}</span>
+        <span>{displayUrl(profile.website)}</span>
+        <span>{displayUrl(profile.linkedin)}</span>
+        <span>{displayUrl(profile.github)}</span>
+      </div>
+    </header>
+
+    <h2>{labels.summary}</h2>
+    {summary.map((paragraph) => <p>{paragraph}</p>)}
+
+    <h2>{labels.skills}</h2>
+    <div class="skills">
+      {stack.map((group) => (
+        <p><strong>{group.label[locale]}:</strong> {group.items[locale].join(', ')}</p>
+      ))}
+    </div>
+
+    <h2>{labels.projects}</h2>
+    {projects.map((project) => (
+      <div class="item">
+        <h3>
+          {project.title}
+          {project.inProgress && <span class="muted"> ({labels.inProgress})</span>}
+        </h3>
+        <p class="company">{project.goal}</p>
+        {project.highlights.length > 0 && (
+          <ul>{project.highlights.map((highlight) => <li>{highlight}</li>)}</ul>
+        )}
+        <p class="stack"><strong>{labels.stack}:</strong> {project.stack.join(' · ')}</p>
+      </div>
+    ))}
+
+    <h2>{labels.experience}</h2>
+    {experience.map((job) => (
+      <div class="item">
+        <div class="item-head"><h3>{job.title}</h3><span class="period">{job.period}</span></div>
+        <p class="company">{job.company}</p>
+        {job.bullets.length > 0 && <ul>{job.bullets.map((bullet) => <li>{bullet}</li>)}</ul>}
+      </div>
+    ))}
+
+    <h2>{labels.education}</h2>
+    {education.map((entry) => (
+      <div class="item compact">
+        <div class="item-head"><h3>{entry.course[locale]}</h3><span class="period">{entry.period}</span></div>
+        <p class="company">{entry.institution[locale]}</p>
+      </div>
+    ))}
+
+    <h2>{labels.certifications}</h2>
+    <div class="two-col">
+      <div>
+        {certifications.map((cert) => (
+          <p class="compact"><strong>{cert.name}</strong> — {cert.issuer} | {cert.year}</p>
+        ))}
+      </div>
+      <div>
+        {awards.map((award) => (
+          <p class="compact"><strong>{award.title[locale]}</strong> | {award.year}</p>
+        ))}
+      </div>
+    </div>
+
+    <h2>{labels.languages}</h2>
+    <p>{languages.map((language) => language[locale]).join(' · ')}</p>
+  </body>
+</html>

@@ -16,6 +16,11 @@ const link = z.object({
   href: z.string(),
 });
 
+const cvSummary = z.object({
+  goal: z.string(),
+  highlights: z.array(z.string()).max(2).default([]),
+});
+
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projects', generateId }),
   schema: z.object({
@@ -29,6 +34,7 @@ const projects = defineCollection({
     links: z.array(link).default([]),
     cover: z.string().optional(),
     gallery: z.array(image).default([]),
+    cv: cvSummary.optional(),
   }),
 });
 

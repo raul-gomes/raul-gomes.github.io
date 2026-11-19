@@ -36,8 +36,11 @@ jobs:
       - name: Unit tests
         run: npm test
 
-      - name: Build
+      - name: Build (site + CV PDFs)
         run: npm run build
+        env:
+          # Chrome preinstalled on the GitHub-hosted runner prints the CV pages to PDF.
+          PW_EXECUTABLE: /usr/bin/google-chrome
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
