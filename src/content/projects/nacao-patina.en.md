@@ -6,6 +6,11 @@ status: live
 stack: [Next.js 16, React 19, TypeScript, Supabase, PostgreSQL, Cloudflare R2, Tailwind CSS, Vitest, pgTAP, Docker]
 icon: mushroom
 order: 3
+cv:
+  goal: "Move a skating community out of WhatsApp into its own social network, with a feed, class schedule, classifieds and chat."
+  highlights:
+    - "Row Level Security on all 25 tables (80 policies): authorization lives in the database."
+    - "Server rendering and counts in a single query: 49% less JavaScript per page."
 links:
   - { label: site, href: 'https://nacaopatina.vercel.app' }
   - { label: code, href: 'https://github.com/raul-gomes' }

@@ -6,6 +6,10 @@ status: live
 stack: [Python, OpenAI Whisper, Docker, Messaging, Producer-Consumer]
 icon: ghost
 order: 6
+cv:
+  goal: "Transcribe many audio files at once with OpenAI Whisper and keep the text indexed for search."
+  highlights:
+    - "Asynchronous processing with a message queue (producer-consumer) in Docker."
 cover: /placeholder/transcricao-whisper/0.svg
 gallery:
   - { src: /placeholder/transcricao-whisper/1.svg, caption: Message queue }

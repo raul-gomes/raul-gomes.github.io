@@ -210,7 +210,7 @@ const cvNode: DesktopNode = {
   label: t.apps.cv,
   icon: 'book',
   kind: 'link',
-  href: profile.cvPath,
+  href: profile.cvPath[locale],
 };
 
 const terminalNode: DesktopNode = {
@@ -244,7 +244,7 @@ const payload = {
     website: profile.website,
     github: profile.github,
     linkedin: profile.linkedin,
-    cvPath: profile.cvPath,
+    cvPath: profile.cvPath[locale],
     bioShort: profile.bioShort[locale],
   },
   nodes,

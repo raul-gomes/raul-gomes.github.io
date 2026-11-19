@@ -6,6 +6,11 @@ status: wip
 stack: [FastAPI, Python, PostgreSQL, SQLAlchemy, React, TypeScript, Vite, Supabase Auth, Docker Compose, GitHub Actions]
 icon: tetris
 order: 2
+cv:
+  goal: "Keep the personal and business finances of self-employed professionals apart, with spending limits, recurring bills and goals."
+  highlights:
+    - "Totals and charts aggregated in PostgreSQL: the overview went from 13 to 7 queries and the main chunk from 177 kB to 35 kB gzip."
+    - "1,009 tests (85% backend coverage), with every API number checked against independent SQL over 8 months of data."
 links:
   - { label: code, href: 'https://github.com/raul-gomes' }
 cover: /projects/placo/00-logo.webp

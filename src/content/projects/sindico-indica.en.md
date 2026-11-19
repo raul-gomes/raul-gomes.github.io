@@ -6,6 +6,11 @@ status: wip
 stack: [Expo, React Native, TypeScript, Supabase, PostgreSQL, PostGIS, Next.js, Jest, pgTAP, EAS]
 icon: magnifier
 order: 4
+cv:
+  goal: "Mobile app where building managers find service providers recommended by other managers, ranked by rating and distance."
+  highlights:
+    - "Search, rating and distance ranking (PostGIS) and pagination in a single PostgreSQL function, seeded with 2,200+ providers."
+    - "RLS on all 12 tables and real account deletion, compliant with Brazil's LGPD."
 links:
   - { label: code, href: 'https://github.com/raul-gomes' }
   # Reserved: uncomment once the app is published on the Play Store.

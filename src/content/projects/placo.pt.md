@@ -6,6 +6,11 @@ status: wip
 stack: [FastAPI, Python, PostgreSQL, SQLAlchemy, React, TypeScript, Vite, Supabase Auth, Docker Compose, GitHub Actions]
 icon: tetris
 order: 2
+cv:
+  goal: "Separar as finanças pessoais (PF) e da empresa (PJ) de profissionais autônomos, com limites, recorrências e metas."
+  highlights:
+    - "Totais e gráficos agregados no PostgreSQL: a visão geral caiu de 13 para 7 consultas e o chunk principal de 177 kB para 35 kB gzip."
+    - "1.009 testes (85% de cobertura no backend) e cada número da API conferido contra SQL independente em 8 meses de dados."
 links:
   - { label: código, href: 'https://github.com/raul-gomes' }
 cover: /projects/placo/00-logo.webp
