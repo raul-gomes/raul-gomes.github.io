@@ -21,6 +21,7 @@ const fallbackIconSrc =
 const simpleIcon = (slug: string, color?: string): string =>
   color ? `https://cdn.simpleicons.org/${slug}/${color}` : `https://cdn.simpleicons.org/${slug}`;
 
+// Brands removed from Simple Icons (Oracle, Azure, AWS, OpenAI) use the generic icon.
 const techIconMap: Record<string, string> = {
   'languages-0': simpleIcon('python'),
   'languages-1': simpleIcon('typescript'),
@@ -45,7 +46,7 @@ const techIconMap: Record<string, string> = {
   'frontend-5': simpleIcon('zod'),
   'data-0': simpleIcon('postgresql'),
   'data-1': simpleIcon('mongodb'),
-  'data-2': simpleIcon('oracle'),
+  'data-2': fallbackIconSrc,
   'data-3': simpleIcon('sqlite'),
   'data-4': simpleIcon('postgresql'),
   'data-5': simpleIcon('postgresql'),
@@ -53,9 +54,9 @@ const techIconMap: Record<string, string> = {
   'pipelines-1': simpleIcon('databricks'),
   'pipelines-2': simpleIcon('databricks'),
   'pipelines-3': simpleIcon('databricks'),
-  'cloud-0': simpleIcon('microsoftazure'),
-  'cloud-1': simpleIcon('oracle'),
-  'cloud-2': simpleIcon('amazonwebservices'),
+  'cloud-0': fallbackIconSrc,
+  'cloud-1': fallbackIconSrc,
+  'cloud-2': fallbackIconSrc,
   'cloud-3': simpleIcon('docker'),
   'cloud-4': simpleIcon('nginx'),
   'cloud-5': simpleIcon('githubactions'),
@@ -65,10 +66,10 @@ const techIconMap: Record<string, string> = {
   'quality-2': simpleIcon('testinglibrary'),
   'quality-3': simpleIcon('grafana'),
   'quality-4': simpleIcon('opentelemetry'),
-  'quality-5': simpleIcon('amazonapigateway'),
+  'quality-5': fallbackIconSrc,
   'ai-0': simpleIcon('githubcopilot', 'ffffff'),
   'ai-1': simpleIcon('anthropic', 'ffffff'),
-  'ai-2': simpleIcon('openai'),
+  'ai-2': fallbackIconSrc,
   'ai-3': simpleIcon('n8n'),
   'ai-4': simpleIcon('make'),
   'methodologies-0': simpleIcon('jira'),
