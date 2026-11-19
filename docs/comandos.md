@@ -22,7 +22,7 @@ O CV é montado a partir do mesmo conteúdo do site e impresso em PDF a cada bui
 - **Habilidades**: `src/data/stack.ts`. Skill nova entra aqui e aparece no site e no CV.
 - **Projetos**: `src/content/projects/*.md`. Entram os de status `live` e `wip`, ordenados por `order`.
   Cada um precisa do campo `cv` no frontmatter (`goal` + até 2 `highlights`); sem ele o build falha.
-  O CV mostra as 6 primeiras tecnologias de `stack`.
+  O CV mostra as 10 primeiras tecnologias de `stack` (ponha as mais relevantes primeiro).
 - **Experiência**: `src/content/experience/*.md` (os itens de lista do corpo viram os tópicos).
 - **Resumo, contato, formação, certificações e idiomas**: `src/data/profile.ts`, `education.ts`, `certs.ts`.
 

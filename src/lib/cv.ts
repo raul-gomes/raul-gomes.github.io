@@ -5,7 +5,7 @@
  */
 
 /** Maximum number of technologies listed per project on the CV. */
-export const CV_MAX_STACK = 6;
+export const CV_MAX_STACK = 10;
 
 /** Number of bio paragraphs used as the CV summary. */
 export const CV_SUMMARY_PARAGRAPHS = 2;
